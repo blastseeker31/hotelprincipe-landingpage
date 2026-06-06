@@ -1,36 +1,31 @@
-# Hotel Príncipe — Hotel Boutique en La Ceiba
+# Hotel Príncipe
 
-Landing page y sistema de postulaciones laborales para **Hotel Príncipe**, hotel boutique en el corazón de La Ceiba, Atlántida, Honduras.
-
-📍 **Sitio:** hotelprincipelcb.com  
-🔒 **Acceso:** solo vía VPN Tailscale
+Landing page y sistema de postulaciones laborales para Hotel Príncipe, hotel boutique en La Ceiba, Atlántida, Honduras.
 
 ## Stack
 
-- **Frontend:** HTML5 + CSS3 + JavaScript vanilla
-- **Backend:** Python 3 con `http.server`
-- **Base de datos:** SQLite (solicitudes de empleo)
-- **Despliegue:** Docker + Nginx Proxy Manager + Cloudflare DNS
+- **Frontend:** HTML5, CSS3, JavaScript vanilla
+- **Backend:** Python 3 (`http.server`)
+- **Base de datos:** SQLite (postulaciones)
+- **Despliegue:** Docker
 
 ## Características
 
-- Página de inicio tipo landing con diseño boutique
-- SEO completo: JSON-LD Hotel schema, Open Graph, Twitter Cards
-- Formulario de postulación laboral con subida de documentos
-- Sistema anti-spam (honeypot + time trap)
-- Panel de revisión de postulaciones
-- Tipografía Clash Display + Satoshi (vía Fontshare)
-- Totalmente responsive, mobile-first
-- Protección contra CSRF, límites de rate y validación de tipos de archivo
-- SSL vía Cloudflare + NPM
+- Landing page con diseño boutique
+- SEO completo con datos estructurados
+- Formulario de postulación laboral con subida de archivos
+- Protección anti-spam integrada
+- Diseño responsive, mobile-first
 
-## Levantar local
+## Instalación
 
 ```bash
+git clone git@github.com:blastseeker31/hotel-principe.git
 cd hotel-principe
 python3 server.py
-# Abrir http://localhost:8080
 ```
+
+Abrir `http://localhost:8080` en el navegador.
 
 ## Docker
 
@@ -38,25 +33,16 @@ python3 server.py
 docker compose up -d
 ```
 
-El contenedor expone el puerto 8080 y monta el volumen de submissions para compartir las postulaciones con el sistema de revisión.
-
 ## Estructura
 
 ```
 hotel-principe/
 ├── index.html          # Landing page principal
 ├── trabajo.html        # Página de ofertas laborales
-├── server.py           # Servidor HTTP + API
+├── server.py           # Servidor HTTP + API de postulaciones
 ├── css/                # Hojas de estilo
-├── js/                 # Scripts frontend
+├── js/                 # JavaScript frontend
 ├── assets/             # Imágenes, logos, favicon
 ├── docker/             # Configuración Docker
-├── submissions/        # Postulaciones recibidas (volumen externo)
 └── docker-compose.yml
 ```
-
-## Notas
-
-- El dominio `hotelprincipelcb.com` está gestionado vía Cloudflare (DNS + proxy).
-- Las postulaciones se almacenan en `~/hermes_projects/hotel-principe-submissions/`.
-- Para revisar postulaciones: `python3 submissions/server.py` (puerto 8086).
