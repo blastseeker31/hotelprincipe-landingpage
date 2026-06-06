@@ -1,0 +1,14 @@
+services:
+  # ── Hotel Principe — Landing + Formulario de empleo (:8080) ──
+  hotel-principe:
+    build: .
+    container_name: hotel-principe
+    restart: unless-stopped
+    volumes:
+      - ~/hermes_projects/hotel-principe-submissions:/hotel-principe-submissions
+    networks:
+      - proyectitos
+
+networks:
+  proyectitos:
+    external: true

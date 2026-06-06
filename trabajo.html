@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="es-HN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hotel Príncipe — Oportunidad laboral: Recepcionista. Aplique ahora en La Ceiba, Atlántida.">
+
+  <title>Trabaje con Nosotros — Hotel Príncipe</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;1,200;1,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha384-b759edf0142860c2c5379a78dad440b6e00015068240e0de91455e28a66b127132a781f6474447173d0a5a99a3ee2f20"
+        crossorigin="anonymous">
+
+  <style>
+    /* ============================================
+       TRABAJO PAGE — Mobile-First (375px base)
+       ============================================ */
+
+    /* ── Hero ── */
+    .trabajo-hero {
+      background: var(--green);
+      position: relative;
+      overflow: hidden;
+      padding: clamp(3rem, 10vw, 7rem) 1.25rem clamp(2.5rem, 8vw, 5rem);
+      text-align: center;
+    }
+
+    /* Subtle radial glow behind text */
+    .trabajo-hero::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(500px, 80vw);
+      height: min(500px, 80vw);
+      background: radial-gradient(circle, rgba(155,123,58,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .trabajo-hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .trabajo-hero-brand {
+      font-family: var(--font-sans);
+      font-size: 0.625rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--gold);
+      margin-bottom: 2rem;
+    }
+
+    .trabajo-hero-logo {
+      display: block;
+      max-width: 320px;
+      width: 70%;
+      height: auto;
+      margin: 0 auto 2rem;
+      filter: brightness(0) invert(1);
+      opacity: 0.95;
+    }
+
+    .trabajo-hero-content h1 {
+      color: var(--cream);
+      font-size: clamp(2rem, 6vw, 4.5rem);
+      font-weight: 200;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Gold ornamental divider */
+    .trabajo-hero-divider {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 0 auto 1.5rem;
+      opacity: 0.7;
+    }
+
+    .trabajo-hero-content .hero-subtitle {
+      font-family: var(--font-display);
+      font-size: clamp(1.0625rem, 2.5vw, 1.375rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(247,244,239,0.85);
+      letter-spacing: 0.04em;
+      margin-bottom: 1.25rem;
+    }
+
+    .trabajo-hero-content .hero-description {
+      font-family: var(--font-sans);
+      font-size: clamp(0.875rem, 1.8vw, 1rem);
+      font-weight: 200;
+      color: rgba(247,244,239,0.65);
+      letter-spacing: 0.02em;
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── Form Section ── */
+    .trabajo-form-section {
+      padding: clamp(2.5rem, 6vw, 5rem) 1.25rem clamp(3rem, 8vw, 6rem);
+      background: var(--cream);
+    }
+
+    .form-intro {
+      text-align: center;
+      margin-bottom: clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .form-intro .label {
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-intro h2 {
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .form-intro p {
+      font-size: clamp(0.875rem, 1.5vw, 1rem);
+      font-weight: 200;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ── Form Container ── */
+    .trabajo-form {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      padding: clamp(1.5rem, 4vw, 3rem);
+    }
+
+    /* ── Section Titles ── */
+    .form-section-block {
+      margin-bottom: 2rem;
+    }
+
+    .form-section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+      font-weight: 300;
+      color: var(--text);
+      letter-spacing: 0.04em;
+      margin: 2.5rem 0 1.75rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .form-section-title:first-child {
+      margin-top: 0;
+    }
+
+    .form-section-num {
+      font-family: var(--font-sans);
+      font-size: 0.5625rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--gold);
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+
+    /* ── Form Groups ── */
+    .trabajo-form .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .trabajo-form .form-group label {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: 0.6875rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+
+    .trabajo-form .form-group label .required-star {
+      color: var(--gold);
+      margin-left: 2px;
+    }
+
+    .trabajo-form .form-group input,
+    .trabajo-form .form-group select,
+    .trabajo-form .form-group textarea {
+      width: 100%;
+      font-family: var(--font-sans);
+      font-size: clamp(0.875rem, 1.5vw, 0.9375rem);
+      font-weight: 300;
+      color: var(--text);
+      background: #FBFAF7;
+      border: 1px solid var(--border);
+      padding: 0.8rem 0.9rem;
+      border-radius: 0;
+      outline: none;
+      transition: border-color 0.3s var(--ease), background 0.3s var(--ease), box-shadow 0.3s var(--ease);
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .trabajo-form .form-group input:focus,
+    .trabajo-form .form-group select:focus,
+    .trabajo-form .form-group textarea:focus {
+      border-color: var(--gold);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(155,123,58,0.08);
+    }
+
+    .trabajo-form .form-group input::placeholder,
+    .trabajo-form .form-group textarea::placeholder {
+      color: var(--text-subtle);
+      font-style: italic;
+      font-weight: 200;
+      font-size: 0.8125rem;
+    }
+
+    .trabajo-form .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239B7B3A' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    .trabajo-form .form-group select:invalid,
+    .trabajo-form .form-group select option[value=""] {
+      color: var(--text-subtle);
+    }
+
+    .trabajo-form .form-group textarea {
+      resize: vertical;
+      min-height: 110px;
+      line-height: 1.6;
+    }
+
+    .trabajo-form .form-group .form-hint {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 200;
+      color: var(--text-subtle);
+      margin-top: 0.4rem;
+      font-style: italic;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── Phone input with fixed prefix ── */
+    .phone-input-wrapper {
+      display: flex;
+      align-items: stretch;
+      width: 100%;
+    }
+    .phone-prefix {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-sans);
+      font-size: clamp(0.875rem, 1.5vw, 0.9375rem);
+      font-weight: 300;
+      color: var(--text);
+      background: #F0EFEB;
+      border: 1px solid var(--border);
+      border-right: none;
+      padding: 0.8rem 0.9rem;
+      white-space: nowrap;
+      user-select: none;
+    }
+    .phone-input-wrapper input {
+      flex: 1;
+      border-left: none !important;
+      font-family: var(--font-sans) !important;
+      font-size: inherit;
+      letter-spacing: 0.02em;
+      -webkit-appearance: none;
+      -moz-appearance: textfield;
+    }
+    .phone-input-wrapper input::placeholder {
+      font-family: var(--font-sans);
+      font-weight: 200;
+      color: var(--text-subtle);
+      letter-spacing: 0.02em;
+    }
+
+    /* Phone: more compact prefix on small screens */
+    @media (max-width: 599px) {
+      .phone-prefix {
+        font-size: 0.8125rem;
+        padding: 0.8rem 0.6rem;
+      }
+      .phone-input-wrapper input {
+        min-width: 0;
+      }
+    }
+    .phone-input-wrapper input:focus {
+      border-color: var(--gold);
+    }
+    .phone-input-wrapper input:focus + .phone-prefix,
+    .phone-input-wrapper:focus-within .phone-prefix {
+      border-color: var(--gold);
+    }
+
+    /* ── Form Row (2-col on desktop) ── */
+    .trabajo-form .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    /* ── Conditional Fields ── */
+    .conditional-field {
+      display: none;
+      margin-top: -0.25rem;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: #FBFAF7;
+      border-left: 3px solid var(--gold);
+      animation: condFadeIn 0.3s var(--ease);
+    }
+
+    .conditional-field.visible {
+      display: block;
+    }
+
+    @keyframes condFadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .conditional-field label {
+      font-size: 0.625rem !important;
+      color: var(--gold-dark) !important;
+      margin-bottom: 0.4rem !important;
+    }
+
+    .conditional-field input,
+    .conditional-field textarea {
+      background: var(--white) !important;
+    }
+
+    /* ── File Upload ── */
+    .file-upload-wrapper {
+      position: relative;
+    }
+
+    .file-upload-wrapper input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .file-upload-display {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      background: #FBFAF7;
+      border: 2px dashed var(--border);
+      padding: 1.25rem 1.25rem;
+      cursor: pointer;
+      transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+    }
+
+    .file-upload-display:hover {
+      border-color: var(--gold);
+      background: rgba(155,123,58,0.03);
+    }
+
+    .file-upload-display.has-file {
+      border-style: solid;
+      border-color: var(--green);
+      background: #F0F5F1;
+    }
+
+    .file-upload-icon {
+      font-size: 1.75rem;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .file-upload-display.has-file .file-upload-icon {
+      color: var(--green);
+    }
+
+    .file-upload-text {
+      flex: 1;
+      min-width: 0;
+      text-align: left;
+      line-height: 1.5;
+    }
+
+    .file-upload-text .file-name {
+      font-weight: 400;
+      color: var(--text);
+      word-break: break-all;
+    }
+
+    .file-upload-text .file-hint {
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+      font-weight: 200;
+    }
+
+    .file-format-warning {
+      display: none;
+      font-size: 0.75rem;
+      color: #8B2E2E;
+      margin-top: 0.5rem;
+      font-weight: 300;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .file-format-warning.visible {
+      display: flex;
+    }
+
+    /* ── Required Fields Note ── */
+    .form-required-note {
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 200;
+      color: var(--text-subtle);
+      font-style: italic;
+      margin-bottom: 1.75rem;
+    }
+
+    /* ── Submit Area ── */
+    .form-submit-area {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-light);
+      text-align: center;
+    }
+
+    .form-submit-area .btn {
+      min-width: 220px;
+      width: 100%;
+      max-width: 320px;
+      padding: 1rem 2rem;
+      font-size: 0.75rem;
+      letter-spacing: 2.5px;
+      position: relative;
+      transition: background 0.25s var(--ease), transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    }
+
+    .form-submit-area .btn-dark {
+      background: var(--text);
+      color: var(--cream);
+    }
+
+    .form-submit-area .btn-dark:hover {
+      background: var(--gold);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(107,91,46,0.2);
+    }
+
+    .form-submit-area .btn.loading {
+      pointer-events: none;
+      color: transparent;
+      background: var(--text);
+    }
+
+    .form-submit-area .btn.loading::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(247,244,239,0.3);
+      border-top-color: var(--cream);
+      border-radius: 50%;
+      animation: btn-spin 0.6s linear infinite;
+    }
+
+    @keyframes btn-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── Validation error highlight ── */
+    .trabajo-form .form-group input.error,
+    .trabajo-form .form-group select.error,
+    .trabajo-form .form-group textarea.error {
+      border-color: #8B2E2E;
+      background: #FFF8F8;
+    }
+
+    /* ── Footer ── */
+    .trabajo-footer {
+      background: var(--text);
+      text-align: center;
+      padding: 1.25rem 1.25rem;
+    }
+
+    .trabajo-footer p {
+      font-family: var(--font-sans);
+      font-size: 0.6875rem;
+      font-weight: 200;
+      color: rgba(247,244,239,0.45);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    /* ── Toast ── */
+    .trabajo-toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 1rem;
+      right: 1rem;
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      font-weight: 300;
+      padding: 1rem 1.5rem;
+      z-index: 200;
+      transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+      letter-spacing: 0.02em;
+      text-align: center;
+      border-radius: 0;
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      line-height: 1.5;
+    }
+
+    .trabajo-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .trabajo-toast-success {
+      background: var(--green);
+      color: var(--white);
+    }
+
+    .trabajo-toast-error {
+      background: #8B2E2E;
+      color: var(--white);
+    }
+
+    /* ── Skip Link ── */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      background: var(--gold);
+      color: var(--white);
+      padding: 0.75rem 1.25rem;
+      z-index: 1000;
+      font-family: var(--font-sans);
+      font-weight: 400;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-radius: 0;
+      text-decoration: none;
+    }
+
+    .skip-link:focus {
+      top: 1rem;
+    }
+
+    /* ── Reduced Motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ============================================
+       TABLET (≥ 600px)
+       ============================================ */
+    @media (min-width: 600px) {
+      .trabajo-hero {
+        padding: clamp(4rem, 10vw, 8rem) 2rem clamp(3rem, 8vw, 6rem);
+      }
+
+      .trabajo-form {
+        padding: clamp(2rem, 5vw, 3.5rem);
+      }
+
+      .trabajo-form .form-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+
+      .file-upload-display {
+        padding: 1.5rem 1.5rem;
+      }
+
+      .trabajo-toast {
+        left: 50%;
+        right: auto;
+        transform: translate(-50%, 20px);
+        min-width: 380px;
+        max-width: 520px;
+      }
+
+      .trabajo-toast.show {
+        transform: translate(-50%, 0);
+      }
+
+      .form-submit-area .btn {
+        width: auto;
+      }
+    }
+
+    /* ============================================
+       DESKTOP (≥ 900px)
+       ============================================ */
+    @media (min-width: 900px) {
+      .trabajo-hero-logo {
+        max-width: 440px;
+        width: 50%;
+      }
+
+      .trabajo-hero-content h1 {
+        font-size: 3rem;
+        letter-spacing: 0.08em;
+      }
+
+      .trabajo-hero-divider {
+        width: 80px;
+      }
+
+      .trabajo-form {
+        padding: 3.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#trabajo-form" class="skip-link">Saltar al formulario</a>
+
+  <main id="main">
+    <!-- ═══════════ HERO ═══════════ -->
+    <section class="trabajo-hero" aria-label="Oportunidad laboral">
+      <div class="trabajo-hero-content">
+        <img
+          class="trabajo-hero-logo"
+          src="assets/images/logo-hotel-principe.png"
+          alt="Hotel Príncipe"
+          width="320"
+          height="130"
+          loading="eager"
+        >
+        <h1>Únase a Nuestro Equipo</h1>
+        <div class="trabajo-hero-divider" aria-hidden="true"></div>
+        <p class="hero-subtitle">Recepcionista — Hotel Príncipe</p>
+        <p class="hero-description">
+          Buscamos una persona con vocación de servicio, organizada y con
+          disposición para integrarse a un equipo donde la hospitalidad es lo primero.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════ FORM ═══════════ -->
+    <section class="trabajo-form-section" aria-labelledby="form-heading">
+      <div class="form-intro">
+        <p class="label">Aplique Ahora</p>
+        <h2 id="form-heading">Formulario de Solicitud</h2>
+        <p>Complete el siguiente formulario con sus datos. Todos los campos marcados con asterisco (*) son obligatorios.</p>
+      </div>
+
+      <form
+        class="trabajo-form"
+        id="trabajo-form"
+        action="/api/trabajo"
+        method="POST"
+        enctype="multipart/form-data"
+        aria-label="Formulario de solicitud de empleo"
+        novalidate
+      >
+
+        <!-- ═══ SECCIÓN 1 ═══ -->
+        <div class="form-section-block">
+          <div class="form-section-title">
+            <span class="form-section-num">Sección 1</span>
+            Formación y Habilidades Básicas
+          </div>
+
+          <div class="form-group">
+            <label for="nombre">Nombre completo <span class="required-star">*</span></label>
+            <input type="text" id="nombre" name="nombre" required autocomplete="name"
+                   placeholder="Primer y segundo nombre, primer y segundo apellido" maxlength="120">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="sexo">Sexo <span class="required-star">*</span></label>
+              <select id="sexo" name="sexo" required>
+                <option value="">Seleccione</option>
+                <option value="masculino">Masculino</option>
+                <option value="femenino">Femenino</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edad">Edad <span class="required-star">*</span></label>
+              <input type="number" id="edad" name="edad" required min="18" max="99" placeholder="Ej: 25">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="nivel_academico">Nivel académico actual <span class="required-star">*</span></label>
+            <select id="nivel_academico" name="nivel_academico" required>
+              <option value="">Seleccione su nivel</option>
+              <option value="bachillerato">Bachillerato</option>
+              <option value="pasante">Pasante Universitario</option>
+              <option value="licenciatura">Licenciatura o Ingeniería</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="area_estudio">Área de estudio <span class="required-star">*</span></label>
+            <input type="text" id="area_estudio" name="area_estudio" required
+                   placeholder="Hospitalidad, Turismo, Administración, etc." maxlength="100">
+          </div>
+
+          <div class="form-group">
+            <label for="manejo_ofimatica">Nivel de manejo de paquetes ofimáticos (Excel y Word) <span class="required-star">*</span></label>
+            <select id="manejo_ofimatica" name="manejo_ofimatica" required>
+              <option value="">Seleccione su nivel</option>
+              <option value="basico">Básico</option>
+              <option value="intermedio">Intermedio</option>
+              <option value="avanzado">Avanzado</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ═══ SECCIÓN 2 ═══ -->
+        <div class="form-section-block">
+          <div class="form-section-title">
+            <span class="form-section-num">Sección 2</span>
+            Experiencia y Disponibilidad
+          </div>
+
+          <div class="form-group">
+            <label for="exp_atencion">¿Tiene experiencia previa en atención al cliente o en hotelería? <span class="required-star">*</span></label>
+            <select id="exp_atencion" name="exp_atencion" required>
+              <option value="">Seleccione</option>
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+
+          <div class="conditional-field" id="detalle-exp-atencion-wrap">
+            <label for="detalle_exp_atencion">Detalle dónde y por cuánto tiempo</label>
+            <textarea id="detalle_exp_atencion" name="detalle_exp_atencion" rows="3"
+                      placeholder="Especifique el nombre del lugar, el cargo desempeñado y la duración de la experiencia." maxlength="500"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="exp_cuadre_caja">¿Tiene experiencia realizando cuadres de caja? <span class="required-star">*</span></label>
+            <select id="exp_cuadre_caja" name="exp_cuadre_caja" required>
+              <option value="">Seleccione</option>
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="disponibilidad_rotativa">¿Cuenta con disponibilidad real para trabajar en turnos rotativos? <span class="required-star">*</span></label>
+            <select id="disponibilidad_rotativa" name="disponibilidad_rotativa" required>
+              <option value="">Seleccione</option>
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="idiomas">¿Sabe algún idioma diferente del español? <span class="required-star">*</span></label>
+            <select id="idiomas" name="idiomas" required>
+              <option value="">Seleccione</option>
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+
+          <div class="conditional-field" id="detalle-idiomas-wrap">
+            <label for="detalle_idiomas">¿Cuál o cuáles?</label>
+            <input type="text" id="detalle_idiomas" name="detalle_idiomas"
+                   placeholder="Ej: Inglés intermedio, francés básico" maxlength="150">
+          </div>
+        </div>
+
+        <!-- ═══ SECCIÓN 3 ═══ -->
+        <div class="form-section-block">
+          <div class="form-section-title">
+            <span class="form-section-num">Sección 3</span>
+            Vocación de Servicio
+          </div>
+
+          <div class="form-group">
+            <label for="pregunta_situacional">
+              Imagine que un huésped llega cansado del viaje y su habitación aún no está lista. ¿Qué acciones tomaría para que se sienta bienvenido y atendido mientras espera? <span class="required-star">*</span>
+            </label>
+            <textarea id="pregunta_situacional" name="pregunta_situacional" required rows="6"
+                      placeholder="Describa las acciones concretas que tomaría en esta situación."
+                      maxlength="1500"></textarea>
+            <span class="form-hint">Máximo 1,500 caracteres. Sea específico en las acciones que tomaría.</span>
+          </div>
+        </div>
+
+        <!-- ═══ SECCIÓN 4 ═══ -->
+        <div class="form-section-block">
+          <div class="form-section-title">
+            <span class="form-section-num">Sección 4</span>
+            Datos de Contacto y Documentación
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="telefono">Número de teléfono <span class="required-star">*</span></label>
+              <div class="phone-input-wrapper">
+                <span class="phone-prefix">+504</span>
+                <input type="text" id="telefono" name="telefono" required
+                       inputmode="numeric" autocomplete="tel"
+                       placeholder="0000-0000" maxlength="9"
+                       pattern="\d{4}-\d{4}">
+              </div>
+              <span class="form-hint">Formato: +504 XXXX-XXXX (8 dígitos)</span>
+            </div>
+            <div class="form-group">
+              <label for="email">Correo electrónico <span class="required-star">*</span></label>
+              <input type="email" id="email" name="email" required autocomplete="email"
+                     placeholder="correo@ejemplo.com" maxlength="100">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="residencia">Lugar de residencia <span class="required-star">*</span></label>
+            <input type="text" id="residencia" name="residencia" required
+                   placeholder="Ej: La Ceiba, Atlántida" maxlength="150">
+          </div>
+
+          <div class="form-group">
+            <label>Adjunte su Currículum Vitae (PDF) <span class="required-star">*</span></label>
+            <div class="file-upload-wrapper">
+              <input type="file" id="cv" name="cv" accept=".pdf,application/pdf" required aria-label="Adjuntar currículum vitae en PDF">
+              <div class="file-upload-display" id="file-display">
+                <span class="file-upload-icon"><i class="fa-solid fa-file-pdf"></i></span>
+                <span class="file-upload-text">
+                  <span class="file-hint">Seleccione su archivo PDF</span>
+                </span>
+              </div>
+            </div>
+            <span class="file-format-warning" id="file-warning">
+              <i class="fa-solid fa-circle-exclamation"></i> Solamente se admiten archivos en formato PDF.
+            </span>
+            <span class="form-hint">Tamaño máximo: 5 MB</span>
+          </div>
+        </div>
+
+        <!-- ═══ ANTI-SPAM (hidden from humans) ═══ -->
+        <!-- Honeypot trap: invisible to users, bots will fill it -->
+        <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
+          <label for="website">Website</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+        <!-- CSRF token: populated by JS -->
+        <input type="hidden" name="csrf_token" id="csrf_token" value="">
+        <!-- Timestamp trap: populated by JS on page load -->
+        <input type="hidden" name="_load_time" id="_load_time" value="">
+
+        <!-- ═══ SUBMIT ═══ -->
+        <p class="form-required-note"><span class="required-star">*</span> Campos obligatorios</p>
+        <div class="form-submit-area">
+          <button type="submit" class="btn btn-dark" id="form-submit-btn">
+            Enviar solicitud
+          </button>
+        </div>
+
+      </form>
+    </section>
+  </main>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="trabajo-footer" role="contentinfo">
+    <p>&copy; 2026 Hotel Príncipe</p>
+  </footer>
+
+  <!-- ═══════════ TOAST ═══════════ -->
+  <div class="trabajo-toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ═══════════ SCRIPTS ═══════════ -->
+  <script>
+    (function() {
+      'use strict';
+
+      // ── Anti-spam: set page load timestamp ──
+      document.getElementById('_load_time').value = Date.now() / 1000;
+
+      // ── Anti-spam: fetch CSRF token ──
+      fetch('/api/csrf')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          document.getElementById('csrf_token').value = data.token;
+        })
+        .catch(function() {
+          // If CSRF fetch fails, form submission will be rejected server-side
+        });
+
+      var form = document.getElementById('trabajo-form');
+      var submitBtn = document.getElementById('form-submit-btn');
+      var toast = document.getElementById('toast');
+      var toastTimer = null;
+      var submitting = false;
+
+      /* ── Toast ── */
+      function showToast(message, type) {
+        if (toastTimer) clearTimeout(toastTimer);
+        toast.textContent = message;
+        toast.className = 'trabajo-toast trabajo-toast-' + type + ' show';
+        toastTimer = setTimeout(function() {
+          toast.classList.remove('show');
+        }, 6000);
+      }
+
+      /* ── Remove error highlights ── */
+      function clearErrors() {
+        var errored = form.querySelectorAll('.error');
+        for (var i = 0; i < errored.length; i++) {
+          errored[i].classList.remove('error');
+        }
+      }
+
+      /* ── Highlight a field as error ── */
+      function markError(el) {
+        el.classList.add('error');
+        el.addEventListener('input', function onInput() {
+          el.classList.remove('error');
+          el.removeEventListener('input', onInput);
+        });
+        el.addEventListener('change', function onChange() {
+          el.classList.remove('error');
+          el.removeEventListener('change', onChange);
+        });
+      }
+
+      /* ── Conditional fields ── */
+      function toggleConditional(triggerId, targetId) {
+        var trigger = document.getElementById(triggerId);
+        var target = document.getElementById(targetId);
+        if (!trigger || !target) return;
+
+        function update() {
+          if (trigger.value === 'si') {
+            target.classList.add('visible');
+          } else {
+            target.classList.remove('visible');
+            var inputs = target.querySelectorAll('input, textarea');
+            for (var i = 0; i < inputs.length; i++) {
+              inputs[i].value = '';
+            }
+          }
+        }
+        trigger.addEventListener('change', update);
+        update();
+      }
+
+      toggleConditional('exp_atencion', 'detalle-exp-atencion-wrap');
+      toggleConditional('idiomas', 'detalle-idiomas-wrap');
+
+      /* ── Phone auto-format: +504 prefix, auto-dash ── */
+      var telefonoEl = document.getElementById('telefono');
+      telefonoEl.addEventListener('input', function() {
+        var raw = this.value.replace(/[^\d]/g, '');     // solo dígitos
+        if (raw.length > 8) raw = raw.slice(0, 8);      // máx 8 dígitos
+        if (raw.length > 4) {
+          this.value = raw.slice(0, 4) + '-' + raw.slice(4);
+        } else {
+          this.value = raw;
+        }
+      });
+      // Prevent non-numeric keys
+      telefonoEl.addEventListener('keydown', function(e) {
+        var allowed = ['Backspace','Delete','ArrowLeft','ArrowRight','Tab','-'];
+        if (allowed.indexOf(e.key) !== -1) return;
+        if (e.key < '0' || e.key > '9') e.preventDefault();
+      });
+
+      /* ── File upload display + PDF validation ── */
+      var fileInput = document.getElementById('cv');
+      var fileDisplay = document.getElementById('file-display');
+      var fileWarning = document.getElementById('file-warning');
+      var fileHint = fileDisplay.querySelector('.file-hint');
+
+      fileInput.addEventListener('change', function() {
+        var file = fileInput.files[0];
+        fileWarning.classList.remove('visible');
+
+        if (!file) {
+          fileDisplay.classList.remove('has-file');
+          fileHint.textContent = 'Seleccione su archivo PDF';
+          return;
+        }
+
+        var isPDF = file.type === 'application/pdf' || file.name.toLowerCase().indexOf('.pdf') === file.name.length - 4;
+        if (!isPDF) {
+          fileWarning.classList.add('visible');
+          fileInput.value = '';
+          fileDisplay.classList.remove('has-file');
+          fileHint.textContent = 'Seleccione su archivo PDF';
+          markError(fileDisplay);
+          return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+          showToast('El archivo excede el tamaño máximo de 5 MB. Por favor seleccione un archivo más pequeño.', 'error');
+          fileInput.value = '';
+          fileDisplay.classList.remove('has-file');
+          fileHint.textContent = 'Seleccione su archivo PDF';
+          return;
+        }
+
+        fileDisplay.classList.add('has-file');
+        var sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+        fileHint.innerHTML = '<span class="file-name">' + esc(file.name) + '</span><br><span class="file-hint">' + sizeMB + ' MB — Haga clic para cambiar</span>';
+      });
+
+      /* ── Form submission ── */
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        if (submitting) return;
+        clearErrors();
+
+        // Validate all required fields
+        var required = form.querySelectorAll('[required]');
+        var firstError = null;
+
+        for (var i = 0; i < required.length; i++) {
+          var el = required[i];
+
+          if (el.type === 'file') {
+            if (!el.files || el.files.length === 0) {
+              markError(fileDisplay);
+              if (!firstError) firstError = fileDisplay;
+            }
+          } else if (el.tagName === 'SELECT') {
+            if (!el.value || el.value === '') {
+              markError(el);
+              if (!firstError) firstError = el;
+            }
+          } else {
+            if (!el.value || el.value.trim() === '') {
+              markError(el);
+              if (!firstError) firstError = el;
+            }
+          }
+        }
+
+        if (firstError) {
+          showToast('Por favor complete todos los campos obligatorios marcados con asterisco (*).', 'error');
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (firstError.focus) firstError.focus();
+          return;
+        }
+
+        // Email validation
+        var emailEl = document.getElementById('email');
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailEl.value.trim())) {
+          showToast('Por favor ingrese un correo electrónico válido.', 'error');
+          markError(emailEl);
+          emailEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          emailEl.focus();
+          return;
+        }
+
+        // Age validation
+        var edadEl = document.getElementById('edad');
+        var edad = parseInt(edadEl.value, 10);
+        if (isNaN(edad) || edad < 18 || edad > 99) {
+          showToast('Por favor ingrese una edad válida entre 18 y 99 años.', 'error');
+          markError(edadEl);
+          edadEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          edadEl.focus();
+          return;
+        }
+
+        // Phone validation: must be +504 XXXX-XXXX (8 digits)
+        var phoneRegex = /^\d{4}-\d{4}$/;
+        if (!phoneRegex.test(telefonoEl.value)) {
+          showToast('El número de teléfono debe tener 8 dígitos en formato +504 XXXX-XXXX.', 'error');
+          markError(telefonoEl);
+          telefonoEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          telefonoEl.focus();
+          return;
+        }
+
+        // PDF validation on submit
+        var cvFile = fileInput.files[0];
+        if (cvFile) {
+          var isPDF = cvFile.type === 'application/pdf' || cvFile.name.toLowerCase().indexOf('.pdf') === cvFile.name.length - 4;
+          if (!isPDF) {
+            showToast('Solamente se admiten archivos en formato PDF.', 'error');
+            markError(fileDisplay);
+            fileDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+          }
+          if (cvFile.size > 5 * 1024 * 1024) {
+            showToast('El archivo excede el tamaño máximo de 5 MB.', 'error');
+            markError(fileDisplay);
+            fileDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+          }
+        }
+
+        // Loading state
+        submitting = true;
+        var originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Enviando solicitud…';
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+
+        var formData = new FormData(form);
+
+        fetch(form.action, {
+          method: 'POST',
+          body: formData
+        })
+        .then(function(response) {
+          if (!response.ok) {
+            return response.json().then(function(data) {
+              throw new Error(data.error || 'Error del servidor');
+            });
+          }
+          return response.json();
+        })
+        .then(function(result) {
+          if (result && result.ok) {
+            showToast('Su solicitud ha sido recibida exitosamente. Nos comunicaremos con usted si su perfil es seleccionado. ¡Gracias por su interés en Hotel Príncipe!', 'success');
+            form.reset();
+            fileDisplay.classList.remove('has-file');
+            fileHint.textContent = 'Seleccione su archivo PDF';
+            var condFields = document.querySelectorAll('.conditional-field');
+            for (var i = 0; i < condFields.length; i++) {
+              condFields[i].classList.remove('visible');
+            }
+            clearErrors();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            throw new Error(result ? (result.error || 'Error del servidor') : 'Error del servidor');
+          }
+        })
+        .catch(function(err) {
+          showToast('Lamentamos el inconveniente. No se pudo procesar su solicitud en este momento. Por favor intente nuevamente o comuníquese al +504 2443-0516.', 'error');
+          console.error('Submit error:', err);
+        })
+        .finally(function() {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('loading');
+          submitting = false;
+        });
+      });
+
+      /* ── esc() HTML-escape utility ── */
+      function esc(str) {
+        if (str == null) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+    })();
+  </script>
+
+</body>
+</html>
