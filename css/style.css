@@ -774,7 +774,9 @@ html.js .reveal.revealed { opacity: 1; transform: none; }
 }
 
 @media (max-width: 760px) {
-  .nav-toggle { display: flex; }
+  /* backdrop-filter crea containing block: atrapa el overlay fixed dentro del header */
+  .nav { backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .nav-toggle { display: flex; position: relative; z-index: 101; }
   .nav-links {
     position: fixed; inset: 0; z-index: 99;
     background: var(--cream);
