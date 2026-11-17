@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es-HN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservar su estadía — Hotel Príncipe, La Ceiba</title>
+  <meta name="description" content="Solicite su reserva en el Hotel Príncipe de La Ceiba. Sin pagos por adelantado: el hotel confirma disponibilidad por teléfono o WhatsApp.">
+  <link rel="canonical" href="https://hotelprincipelcb.com/reservar">
+  <meta property="og:title" content="Reservar — Hotel Príncipe">
+  <meta property="og:description" content="Solicite su estadía en línea. Le confirmamos por teléfono o WhatsApp.">
+  <meta property="og:url" content="https://hotelprincipelcb.com/reservar">
+  <link rel="icon" type="image/png" sizes="512x512" href="/assets/images/crown-favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Josefin+Sans:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Ir al contenido</a>
+
+  <header class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <a class="nav-logo" href="/" aria-label="Hotel Príncipe — inicio">
+        <img src="/assets/images/logo-hotel-principe.png" alt="Hotel Príncipe" width="141" height="52">
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#hotel">El Hotel</a></li>
+        <li><a href="/#servicios">Servicios</a></li>
+        <li><a href="/#ubicacion">Ubicación</a></li>
+        <li><a class="btn btn-gold" href="/reservar" aria-current="page">Reservar</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <div class="page-head">
+      <span class="label">Reservas</span>
+      <h1>Solicite su estadía</h1>
+      <p>Complete el formulario y el hotel le contactará para confirmar disponibilidad. No se requiere pago en línea.</p>
+    </div>
+
+    <div class="wrap reserve-layout">
+      <div class="form-card">
+        <noscript>
+          <div class="form-alert visible">Este formulario requiere JavaScript. Para reservar, llámenos al +504 2443-0516 o escríbanos por WhatsApp al +504 9451-9992.</div>
+        </noscript>
+
+        <form id="reservaForm" novalidate>
+          <div class="form-alert" id="formAlert" role="alert"></div>
+
+          <!-- Honeypot: invisible para personas, los bots lo llenan -->
+          <div class="hp-field" aria-hidden="true">
+            <label for="website">Sitio web</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+          <input type="hidden" name="_load_time" id="_load_time" value="">
+          <input type="hidden" name="csrf_token" id="csrf_token" value="">
+
+          <div class="form-group">
+            <label for="nombre">Nombre completo <span class="req">*</span></label>
+            <input type="text" id="nombre" name="nombre" maxlength="100" autocomplete="name" placeholder="Como aparece en su documento de identidad" required>
+            <p class="field-error" id="err-nombre"></p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="telefono">Teléfono <span class="req">*</span></label>
+              <div class="phone-wrap">
+                <span class="phone-prefix">+504</span>
+                <input type="text" id="telefono" name="telefono" inputmode="numeric" maxlength="9" placeholder="0000-0000" autocomplete="tel-national" required>
+              </div>
+              <p class="field-error" id="err-telefono"></p>
+            </div>
+            <div class="form-group">
+              <label for="email">Correo electrónico</label>
+              <input type="email" id="email" name="email" maxlength="100" autocomplete="email" placeholder="correo@ejemplo.com">
+              <p class="field-error" id="err-email"></p>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fecha_llegada">Fecha de llegada <span class="req">*</span></label>
+              <input type="date" id="fecha_llegada" name="fecha_llegada" required>
+              <p class="field-error" id="err-fecha_llegada"></p>
+            </div>
+            <div class="form-group">
+              <label for="fecha_salida">Fecha de salida <span class="req">*</span></label>
+              <input type="date" id="fecha_salida" name="fecha_salida" required>
+              <p class="field-error" id="err-fecha_salida"></p>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="habitaciones">Habitaciones <span class="req">*</span></label>
+              <select id="habitaciones" name="habitaciones">
+                <option value="1" selected>1 habitación</option>
+                <option value="2">2 habitaciones</option>
+                <option value="3">3 habitaciones</option>
+                <option value="4">4 habitaciones</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="huespedes">Huéspedes <span class="req">*</span></label>
+              <select id="huespedes" name="huespedes">
+                <option value="1">1 huésped</option>
+                <option value="2" selected>2 huéspedes</option>
+                <option value="3">3 huéspedes</option>
+                <option value="4">4 huéspedes</option>
+                <option value="5">5 huéspedes</option>
+                <option value="6">6 huéspedes</option>
+                <option value="7">7 huéspedes</option>
+                <option value="8">8 huéspedes</option>
+                <option value="9">9 huéspedes</option>
+                <option value="10">10 huéspedes</option>
+                <option value="11">11 huéspedes</option>
+                <option value="12">12 huéspedes</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="stay-summary" id="staySummary" aria-live="polite"></div>
+
+          <div class="form-group">
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" maxlength="500" rows="3" placeholder="Hora aproximada de llegada, necesidades especiales, preguntas…"></textarea>
+            <p class="hint"><span id="msgCount">0</span>/500 caracteres</p>
+          </div>
+
+          <div class="submit-row">
+            <button type="submit" class="btn btn-gold" id="submitBtn">
+              <span id="submitText">Enviar solicitud</span>
+            </button>
+            <span class="submit-note">Le confirmaremos por teléfono o WhatsApp.</span>
+          </div>
+        </form>
+
+        <!-- Confirmación -->
+        <div class="success-panel" id="successPanel" role="status">
+          <div class="success-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>
+          </div>
+          <span class="label">Solicitud recibida</span>
+          <p class="success-code" id="successCode">HP-XXXXXX</p>
+          <p class="code-hint">Guarde este código. El hotel le contactará para confirmar su reserva.</p>
+          <div class="success-details">
+            <dl>
+              <div class="fact-row"><dt>A nombre de</dt><dd id="okNombre">—</dd></div>
+              <div class="fact-row"><dt>Llegada</dt><dd id="okLlegada">—</dd></div>
+              <div class="fact-row"><dt>Salida</dt><dd id="okSalida">—</dd></div>
+              <div class="fact-row"><dt>Estadía</dt><dd id="okNoches">—</dd></div>
+              <div class="fact-row"><dt>Habitaciones</dt><dd id="okHabitaciones">—</dd></div>
+              <div class="fact-row"><dt>Huéspedes</dt><dd id="okHuespedes">—</dd></div>
+            </dl>
+          </div>
+          <div class="success-actions">
+            <a class="btn btn-green" id="successWa" href="#" target="_blank" rel="noopener noreferrer">Confirmar por WhatsApp</a>
+            <button class="btn btn-outline" id="nuevaBtn" type="button">Nueva solicitud</button>
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="aside-card">
+          <h3>Cómo funciona</h3>
+          <ol class="steps">
+            <li><strong>Solicitud</strong><span>Complete el formulario con sus fechas y datos de contacto. Recibirá un código de reserva.</span></li>
+            <li><strong>Confirmación</strong><span>El hotel revisa disponibilidad y le contacta por teléfono o WhatsApp para confirmar su estadía.</span></li>
+            <li><strong>Estadía</strong><span>Pague al llegar: efectivo, tarjeta o transferencia. Presente su código en recepción.</span></li>
+          </ol>
+        </div>
+        <div class="aside-card aside-contact">
+          <h3>¿Prefiere atención directa?</h3>
+          <p>Nuestro equipo le atiende las 24 horas.</p>
+          <a class="btn btn-outline" href="tel:+50424430516">+504 2443-0516</a>
+          <a class="btn btn-green" href="https://wa.me/50494519992?text=Hola%2C%20quisiera%20reservar%20una%20habitaci%C3%B3n%20en%20el%20Hotel%20Pr%C3%ADncipe" target="_blank" rel="noopener noreferrer">WhatsApp +504 9451-9992</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-bottom" style="margin-top:0; border-top:none; padding-top:0;">
+        <span>© <span id="year">2026</span> Hotel Príncipe · La Ceiba, Atlántida</span>
+        <span><a href="/">Volver al inicio</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js" defer></script>
+  <script src="/js/reservar.js" defer></script>
+</body>
+</html>

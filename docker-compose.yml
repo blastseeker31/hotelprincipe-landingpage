@@ -1,11 +1,16 @@
+# Despliegue en Hetzner (misma arquitectura que producción DO: red proyectitos + NPM).
+# El contenedor NO publica puertos al host; NPM hace de reverse proxy con SSL.
 services:
-  # ── Hotel Principe — Landing + Formulario de empleo (:8080) ──
   hotel-principe:
     build: .
     container_name: hotel-principe
     restart: unless-stopped
+    env_file: .env
+    environment:
+      HOST: "0.0.0.0"
+      PORT: "8080"
     volumes:
-      - ~/hermes_projects/hotel-principe-submissions:/hotel-principe-submissions
+      - ./data:/app/data
     networks:
       - proyectitos
 

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es-HN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de reservas — Hotel Príncipe</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" sizes="512x512" href="/assets/images/crown-favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Josefin+Sans:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="nav scrolled">
+    <div class="wrap nav-inner">
+      <a class="nav-logo" href="/" aria-label="Hotel Príncipe — inicio">
+        <img src="/assets/images/logo-hotel-principe.png" alt="Hotel Príncipe" width="141" height="52">
+      </a>
+      <span class="label">Panel de reservas</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- Acceso -->
+    <div class="admin-gate" id="gate">
+      <div class="form-card">
+        <h1>Administración</h1>
+        <p>Ingrese la llave de administración para gestionar las reservas.</p>
+        <div class="form-alert" id="gateAlert" role="alert"></div>
+        <form id="gateForm">
+          <div class="form-group">
+            <label for="adminKey">Llave de administración</label>
+            <input type="password" id="adminKey" autocomplete="current-password" required>
+          </div>
+          <button type="submit" class="btn btn-gold" id="gateBtn" style="width:100%">Entrar</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Panel -->
+    <div class="admin-shell" id="shell" hidden>
+      <div class="admin-top">
+        <h1>Reservas</h1>
+        <div class="admin-actions-top">
+          <button class="btn btn-outline btn-small" id="refreshBtn" type="button">Actualizar</button>
+          <button class="btn btn-cancel btn-small" id="logoutBtn" type="button">Salir</button>
+        </div>
+      </div>
+
+      <div class="chip-row" id="chips" role="tablist" aria-label="Filtrar por estado"></div>
+      <div id="list"></div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="/js/admin.js" defer></script>
+</body>
+</html>

@@ -1,700 +1,524 @@
 #!/usr/bin/env python3
 """
-Hotel Príncipe — Servidor HTTP con soporte para formulario de empleo.
-Sirve archivos estáticos y procesa POST multipart en /api/trabajo.
-v3 — SQLite backend, anti-spam, security-hardened.
+Hotel Príncipe — servidor web + sistema de reservas.
+Stdlib puro (cero dependencias). Pensado para desarrollo local y
+posterior despliegue en Docker (Hetzner) detrás de Nginx Proxy Manager.
+
+Rutas:
+  GET  /                        Landing page
+  GET  /reservar                Formulario de reserva
+  GET  /admin-reservas          Panel de gestión (requiere ADMIN_KEY)
+  GET  /api/csrf                Token CSRF de un solo uso (TTL 10 min)
+  POST /api/reservas            Crear solicitud de reserva
+  GET  /api/admin/reservas      Listar reservas (?key=...&estado=...)
+  POST /api/admin/reservas/estado  Cambiar estado {key, codigo, estado}
+  GET  /health                  Estado del servicio
 """
 
-import http.server
+import hmac
 import json
+import mimetypes
 import re
-import time
 import secrets
 import sqlite3
 import threading
-import urllib.parse
+import time
 import urllib.request
+from datetime import date, datetime, timedelta
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from collections import defaultdict
+from urllib.parse import urlparse, parse_qs
 
-HOST = "0.0.0.0"
-PORT = 8080
-ROOT = Path(__file__).parent.resolve()
-SUBMISSIONS_DIR = ROOT.parent / "hotel-principe-submissions"
-DB_PATH = SUBMISSIONS_DIR / "solicitudes.db"
-PDF_DIR = SUBMISSIONS_DIR / "pdfs"
-MAX_FILE_SIZE = 5 * 1024 * 1024
-MAX_BODY_SIZE = 6 * 1024 * 1024
+BASE_DIR = Path(__file__).resolve().parent
 
-# ── Telegram notification config ──
-TG_TOKEN = "8876113209:AAHpVE4IxtPBfOxke9tvBXFK0Nz5FVVojjg"
-TG_CHAT_ID = "8205920091"
+# ---------------------------------------------------------------------------
+# Configuración: variables de entorno > archivo .env > defaults
+# ---------------------------------------------------------------------------
 
-RATE_LIMIT_WINDOW = 60
-RATE_LIMIT_MAX = 5
-rate_limit_store: dict[str, list[float]] = defaultdict(list)
+def _load_env_file():
+    env_path = BASE_DIR / ".env"
+    values = {}
+    if env_path.exists():
+        for line in env_path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            k, v = line.split("=", 1)
+            values[k.strip()] = v.strip().strip('"').strip("'")
+    return values
 
-csrf_tokens: dict[str, float] = {}
-CSRF_TOKEN_TTL = 600
-MIN_FORM_TIME = 3
+_ENV_FILE = _load_env_file()
 
-MAX_FIELD_LENGTHS = {
-    "nombre": 120, "area_estudio": 100, "telefono": 9,
-    "email": 100, "residencia": 150, "pregunta_situacional": 1500,
-    "detalle_exp_atencion": 500, "detalle_idiomas": 150,
-    "sexo": 20, "nivel_academico": 30, "manejo_ofimatica": 20,
-    "exp_atencion": 5, "exp_cuadre_caja": 5,
-    "disponibilidad_rotativa": 5, "idiomas": 5,
-}
+def cfg(key, default=""):
+    import os
+    return os.environ.get(key) or _ENV_FILE.get(key) or default
 
-EMAIL_RE = re.compile(
-    r'^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@'
-    r'[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?'
-    r'(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$'
-)
+HOST = cfg("HOST", "127.0.0.1")
+PORT = int(cfg("PORT", "8090"))
+ADMIN_KEY = cfg("ADMIN_KEY", "")
+TG_TOKEN = cfg("TELEGRAM_BOT_TOKEN", "")
+TG_CHAT = cfg("TELEGRAM_CHAT_ID", "")
+DATA_DIR = BASE_DIR / cfg("DATA_DIR", "data")
+DB_PATH = DATA_DIR / "reservas.sqlite3"
+
+MIN_FORM_SECONDS = 3          # time trap: menos que esto = bot
+MAX_FORM_SECONDS = 2 * 3600   # formulario abierto más de 2 h = token viejo
+CSRF_TTL = 600                # 10 minutos
+MAX_BODY = 64 * 1024          # 64 KB
+MAX_NOCHES = 30
+RATE_LIMIT = 5                # reservas por IP por hora
+RATE_WINDOW = 3600
+
+ESTADOS = ("pendiente", "confirmada", "cancelada")
+
+# ---------------------------------------------------------------------------
+# Base de datos (thread-local para ThreadingHTTPServer)
+# ---------------------------------------------------------------------------
 
 _db_local = threading.local()
 
-
-# ── FS helpers ──────────────────────────────────────────────
-
-def ensure_dir(path: Path):
-    path.mkdir(parents=True, exist_ok=True)
-
-
-# ── Database ────────────────────────────────────────────────
+def get_db():
+    conn = getattr(_db_local, "conn", None)
+    if conn is None:
+        conn = sqlite3.connect(str(DB_PATH), timeout=10)
+        conn.row_factory = sqlite3.Row
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("PRAGMA foreign_keys=ON")
+        _db_local.conn = conn
+    return conn
 
 def init_db():
-    ensure_dir(SUBMISSIONS_DIR)
-    ensure_dir(PDF_DIR)
-    conn = sqlite3.connect(str(DB_PATH))
-    conn.execute("PRAGMA journal_mode=WAL")
-    conn.execute("PRAGMA foreign_keys=ON")
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS solicitudes (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            created_at TEXT NOT NULL DEFAULT (datetime('now','localtime')),
-            ip TEXT,
-            nombre TEXT NOT NULL,
-            sexo TEXT,
-            edad INTEGER,
-            nivel_academico TEXT,
-            area_estudio TEXT,
-            manejo_ofimatica TEXT,
-            exp_atencion TEXT,
-            detalle_exp_atencion TEXT,
-            exp_cuadre_caja TEXT,
-            disponibilidad_rotativa TEXT,
-            idiomas TEXT,
-            detalle_idiomas TEXT,
-            pregunta_situacional TEXT,
-            telefono TEXT,
-            email TEXT,
-            residencia TEXT,
-            cv_path TEXT,
-            revisado INTEGER DEFAULT 0
-        )
-    """)
-    conn.commit()
-    conn.close()
-    count = sqlite3.connect(str(DB_PATH)).execute(
-        "SELECT COUNT(*) FROM solicitudes").fetchone()[0]
-    print(f"DB ready: {count} solicitudes en {DB_PATH}")
-
-
-def get_db() -> sqlite3.Connection:
-    if not hasattr(_db_local, "conn") or _db_local.conn is None:
-        _db_local.conn = sqlite3.connect(str(DB_PATH))
-        _db_local.conn.row_factory = sqlite3.Row
-    return _db_local.conn
-
-
-def save_submission(fields: dict, cv_data: bytes, cv_filename: str,
-                    client_ip: str) -> dict:
-    ts = time.strftime("%Y%m%d_%H%M%S")
-    safe_name = re.sub(r'[^a-zA-Z0-9_]', '_',
-                       fields.get("nombre", "sin_nombre"))
-    pdf_name = f"{ts}_{safe_name}.pdf"
-    pdf_path = PDF_DIR / pdf_name
-    pdf_path.write_bytes(cv_data)
-
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
     db = get_db()
     db.execute("""
-        INSERT INTO solicitudes (
-            ip, nombre, sexo, edad, nivel_academico, area_estudio,
-            manejo_ofimatica, exp_atencion, detalle_exp_atencion,
-            exp_cuadre_caja, disponibilidad_rotativa, idiomas,
-            detalle_idiomas, pregunta_situacional,
-            telefono, email, residencia, cv_path
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (
-        client_ip,
-        fields.get("nombre", ""),
-        fields.get("sexo", ""),
-        int(fields.get("edad", 0)),
-        fields.get("nivel_academico", ""),
-        fields.get("area_estudio", ""),
-        fields.get("manejo_ofimatica", ""),
-        fields.get("exp_atencion", ""),
-        fields.get("detalle_exp_atencion", ""),
-        fields.get("exp_cuadre_caja", ""),
-        fields.get("disponibilidad_rotativa", ""),
-        fields.get("idiomas", ""),
-        fields.get("detalle_idiomas", ""),
-        fields.get("pregunta_situacional", ""),
-        "+504 " + fields.get("telefono", ""),
-        fields.get("email", ""),
-        fields.get("residencia", ""),
-        str(pdf_path),
-    ))
+        CREATE TABLE IF NOT EXISTS reservas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            codigo TEXT UNIQUE NOT NULL,
+            nombre TEXT NOT NULL,
+            telefono TEXT NOT NULL,
+            email TEXT,
+            fecha_llegada TEXT NOT NULL,
+            fecha_salida TEXT NOT NULL,
+            noches INTEGER NOT NULL,
+            habitaciones INTEGER NOT NULL,
+            huespedes INTEGER NOT NULL,
+            mensaje TEXT,
+            estado TEXT NOT NULL DEFAULT 'pendiente',
+            ip TEXT,
+            created_at TEXT DEFAULT (datetime('now','localtime')),
+            updated_at TEXT
+        )
+    """)
+    db.execute("CREATE INDEX IF NOT EXISTS idx_reservas_estado ON reservas(estado)")
     db.commit()
-    row_id = db.execute("SELECT last_insert_rowid()").fetchone()[0]
-    return {"id": row_id, "pdf": str(pdf_path)}
 
+# ---------------------------------------------------------------------------
+# Anti-spam: CSRF de un solo uso + rate limit por IP
+# ---------------------------------------------------------------------------
 
-def send_notification(fields: dict, pdf_path: str, submission_id: int):
-    """Send Telegram notification with complete applicant profile + CV."""
-    nombre = fields.get("nombre", "Sin nombre")
+_csrf_lock = threading.Lock()
+_csrf_tokens = {}   # token -> expiry epoch
 
-    text = (
-        f"📋 <b>Solicitud #{submission_id}</b> — Recepcionista\n\n"
-        f"<b>👤 DATOS PERSONALES</b>\n"
-        f"Nombre: {nombre}\n"
-        f"Sexo: {fields.get('sexo', '')}\n"
-        f"Edad: {fields.get('edad', '')} años\n"
-        f"Residencia: {fields.get('residencia', '')}\n\n"
-        f"<b>🎓 FORMACIÓN</b>\n"
-        f"Nivel: {fields.get('nivel_academico', '')}\n"
-        f"Área: {fields.get('area_estudio', '')}\n"
-        f"Ofimática: {fields.get('manejo_ofimatica', '')}\n\n"
-        f"<b>💼 EXPERIENCIA</b>\n"
-        f"Atención/Hotelería: {fields.get('exp_atencion', '')}"
-    )
-    if fields.get('detalle_exp_atencion'):
-        text += f"\n  ↳ {fields['detalle_exp_atencion']}"
-    text += (
-        f"\nCuadre de caja: {fields.get('exp_cuadre_caja', '')}\n"
-        f"Turnos rotativos: {fields.get('disponibilidad_rotativa', '')}\n"
-        f"Idiomas: {fields.get('idiomas', '')}"
-    )
-    if fields.get('detalle_idiomas'):
-        text += f"\n  ↳ {fields['detalle_idiomas']}"
-
-    pregunta = fields.get('pregunta_situacional', '')
-    text += (
-        f"\n\n<b>💬 VOCACIÓN DE SERVICIO</b>\n"
-        f"{pregunta[:400]}"
-        f"{'...' if len(pregunta) > 400 else ''}\n\n"
-        f"<b>📞 CONTACTO</b>\n"
-        f"Tel: {fields.get('telefono', '')}\n"
-        f"Email: {fields.get('email', '')}"
-    )
-
-    base_url = f"https://api.telegram.org/bot{TG_TOKEN}"
-
-    # Send text message
-    try:
-        data = json.dumps({
-            "chat_id": TG_CHAT_ID,
-            "text": text,
-            "parse_mode": "HTML",
-            "disable_web_page_preview": True,
-        }).encode()
-        req = urllib.request.Request(f"{base_url}/sendMessage", data=data,
-            headers={"Content-Type": "application/json"})
-        urllib.request.urlopen(req, timeout=10)
-        print(f"[{time.strftime('%H:%M:%S')}] "
-              f"TG text sent: #{submission_id}")
-    except Exception as e:
-        print(f"[{time.strftime('%H:%M:%S')}] "
-              f"TG text ERROR: {e}")
-
-    # Send CV as document
-    try:
-        import io, uuid
-        boundary = uuid.uuid4().hex
-        with open(pdf_path, "rb") as f:
-            pdf_data = f.read()
-
-        body = (
-            f"--{boundary}\r\n"
-            f'Content-Disposition: form-data; name="chat_id"\r\n\r\n'
-            f"{TG_CHAT_ID}\r\n"
-            f"--{boundary}\r\n"
-            f'Content-Disposition: form-data; name="document"; '
-            f'filename="CV_{submission_id}.pdf"\r\n'
-            f"Content-Type: application/pdf\r\n\r\n"
-        ).encode() + pdf_data + f"\r\n--{boundary}--\r\n".encode()
-
-        req = urllib.request.Request(f"{base_url}/sendDocument", data=body,
-            headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
-        urllib.request.urlopen(req, timeout=15)
-        print(f"[{time.strftime('%H:%M:%S')}] "
-              f"TG CV sent: #{submission_id}")
-    except Exception as e:
-        print(f"[{time.strftime('%H:%M:%S')}] "
-              f"TG CV ERROR: {e}")
-
-
-# ── Security helpers ────────────────────────────────────────
-
-def cleanup_csrf_tokens():
+def issue_csrf():
     now = time.time()
-    expired = [t for t, exp in csrf_tokens.items() if now > exp]
-    for t in expired:
-        del csrf_tokens[t]
-
-
-def generate_csrf_token() -> str:
-    cleanup_csrf_tokens()
-    token = secrets.token_hex(32)
-    csrf_tokens[token] = time.time() + CSRF_TOKEN_TTL
+    with _csrf_lock:
+        for t in [t for t, exp in _csrf_tokens.items() if exp < now]:
+            _csrf_tokens.pop(t, None)
+        token = secrets.token_hex(32)
+        _csrf_tokens[token] = now + CSRF_TTL
     return token
 
-
-def check_rate_limit(client_ip: str) -> bool:
-    now = time.time()
-    timestamps = rate_limit_store[client_ip]
-    timestamps = [t for t in timestamps if now - t < RATE_LIMIT_WINDOW]
-    rate_limit_store[client_ip] = timestamps
-    if len(timestamps) >= RATE_LIMIT_MAX:
+def consume_csrf(token):
+    if not token:
         return False
-    timestamps.append(now)
-    return True
+    with _csrf_lock:
+        expiry = _csrf_tokens.pop(token, None)
+    return bool(expiry and time.time() <= expiry)
 
+_rate_lock = threading.Lock()
+_rate_hits = {}     # ip -> [timestamps]
 
-# ── Multipart parser ────────────────────────────────────────
+def rate_limited(ip):
+    now = time.time()
+    with _rate_lock:
+        hits = [t for t in _rate_hits.get(ip, []) if now - t < RATE_WINDOW]
+        if len(hits) >= RATE_LIMIT:
+            _rate_hits[ip] = hits
+            return True
+        hits.append(now)
+        _rate_hits[ip] = hits
+    return False
 
-def parse_multipart(body: bytes, content_type: str) -> dict:
-    boundary = None
-    for part in content_type.split(";"):
-        part = part.strip()
-        if part.startswith("boundary="):
-            boundary = part[len("boundary="):].strip('"')
-            break
-    if not boundary:
-        raise ValueError("No boundary found in Content-Type")
+# ---------------------------------------------------------------------------
+# Validación de la reserva
+# ---------------------------------------------------------------------------
 
-    boundary_bytes = boundary.encode("utf-8")
-    delimiter = b"--" + boundary_bytes
-    close_delimiter = b"--" + boundary_bytes + b"--"
+NOMBRE_RE = re.compile(r"^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ'\-\. ]{3,100}$")
+TEL_RE = re.compile(r"^\d{4}-\d{4}$")
+EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]{2,}$")
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
-    parts = body.split(delimiter)[1:]
-    if parts and parts[-1].startswith(b"--"):
-        parts[-1] = parts[-1].split(close_delimiter)[0]
+def _clean_text(value, limit):
+    if value is None:
+        return ""
+    value = str(value)
+    value = "".join(ch for ch in value if ch >= " " or ch in "\n")
+    value = re.sub(r"[ \t]+", " ", value).strip()
+    return value[:limit]
 
-    fields = {}
-    files = []
+def validar_reserva(f):
+    """Devuelve (datos_limpios, error). error es None si todo es válido."""
+    nombre = _clean_text(f.get("nombre"), 100)
+    nombre = re.sub(r"\s{2,}", " ", nombre)
+    if not NOMBRE_RE.match(nombre):
+        return None, "Ingrese su nombre completo (solo letras, entre 3 y 100 caracteres)."
 
-    for part in parts:
-        if not part or part == b"--\r\n" or part == b"--":
-            continue
+    telefono = _clean_text(f.get("telefono"), 20)
+    if not TEL_RE.match(telefono):
+        return None, "Ingrese un teléfono válido de Honduras con formato 0000-0000."
 
-        if b"\r\n\r\n" in part:
-            header_section, body_section = part.split(b"\r\n\r\n", 1)
-        elif b"\n\n" in part:
-            header_section, body_section = part.split(b"\n\n", 1)
-        else:
-            continue
+    email = _clean_text(f.get("email"), 100)
+    if email and not EMAIL_RE.match(email):
+        return None, "El correo electrónico no tiene un formato válido."
 
-        body_section = body_section.rstrip(b"\r\n")
-        headers_text = header_section.decode("utf-8", errors="replace")
+    llegada_s = _clean_text(f.get("fecha_llegada"), 10)
+    salida_s = _clean_text(f.get("fecha_salida"), 10)
+    if not DATE_RE.match(llegada_s) or not DATE_RE.match(salida_s):
+        return None, "Seleccione fechas de llegada y salida válidas."
+    try:
+        llegada = date.fromisoformat(llegada_s)
+        salida = date.fromisoformat(salida_s)
+    except ValueError:
+        return None, "Seleccione fechas de llegada y salida válidas."
+    hoy = date.today()
+    if llegada < hoy:
+        return None, "La fecha de llegada no puede ser anterior a hoy."
+    if salida <= llegada:
+        return None, "La fecha de salida debe ser posterior a la fecha de llegada."
+    noches = (salida - llegada).days
+    if noches > MAX_NOCHES:
+        return None, f"La estadía máxima es de {MAX_NOCHES} noches. Para estadías más largas, contáctenos directamente."
 
-        disp_match = re.search(
-            r'Content-Disposition:\s*form-data;\s*(.*)',
-            headers_text, re.IGNORECASE)
-        if not disp_match:
-            continue
+    try:
+        habitaciones = int(f.get("habitaciones"))
+        huespedes = int(f.get("huespedes"))
+    except (TypeError, ValueError):
+        return None, "Indique el número de habitaciones y de huéspedes."
+    if not 1 <= habitaciones <= 4:
+        return None, "El número de habitaciones debe estar entre 1 y 4."
+    if not 1 <= huespedes <= 12:
+        return None, "El número de huéspedes debe estar entre 1 y 12."
 
-        disp_params = {}
-        for pair in disp_match.group(1).split(";"):
-            pair = pair.strip()
-            if "=" in pair:
-                k, v = pair.split("=", 1)
-                disp_params[k.strip()] = v.strip().strip('"')
+    mensaje = _clean_text(f.get("mensaje"), 500)
 
-        name = disp_params.get("name", "")
-        filename = disp_params.get("filename", None)
+    return {
+        "nombre": nombre,
+        "telefono": "+504 " + telefono,
+        "email": email,
+        "fecha_llegada": llegada_s,
+        "fecha_salida": salida_s,
+        "noches": noches,
+        "habitaciones": habitaciones,
+        "huespedes": huespedes,
+        "mensaje": mensaje,
+    }, None
 
-        if filename:
-            ct_match = re.search(
-                r'Content-Type:\s*(.*)', headers_text, re.IGNORECASE)
-            file_ct = (ct_match.group(1).strip()
-                       if ct_match else "application/octet-stream")
-            files.append({
-                "name": name,
-                "filename": filename,
-                "content_type": file_ct,
-                "data": body_section,
-            })
-        else:
-            value = body_section.decode("utf-8", errors="replace")
-            fields[name] = value
+_CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"  # sin 0/O/1/I
 
-    return {"fields": fields, "files": files}
+def generar_codigo(db):
+    for _ in range(10):
+        codigo = "HP-" + "".join(secrets.choice(_CODE_ALPHABET) for _ in range(6))
+        if not db.execute("SELECT 1 FROM reservas WHERE codigo=?", (codigo,)).fetchone():
+            return codigo
+    raise RuntimeError("No se pudo generar un código único")
 
+# ---------------------------------------------------------------------------
+# Notificación Telegram (opcional; hilo en background, nunca bloquea la respuesta)
+# ---------------------------------------------------------------------------
 
-# ── Silver data cleaning ───────────────────────────────────
+def notificar_telegram(datos, codigo):
+    if not TG_TOKEN or not TG_CHAT:
+        print(f"[TG] no configurado — reserva {codigo} guardada solo en SQLite", flush=True)
+        return
+    lineas = [
+        "NUEVA RESERVA — Hotel Príncipe",
+        f"Código: {codigo}",
+        f"Nombre: {datos['nombre']}",
+        f"Teléfono: {datos['telefono']}",
+    ]
+    if datos["email"]:
+        lineas.append(f"Correo: {datos['email']}")
+    lineas += [
+        f"Llegada: {datos['fecha_llegada']}  |  Salida: {datos['fecha_salida']}  ({datos['noches']} noches)",
+        f"Habitaciones: {datos['habitaciones']}  |  Huéspedes: {datos['huespedes']}",
+    ]
+    if datos["mensaje"]:
+        lineas.append(f"Mensaje: {datos['mensaje']}")
+    texto = "\n".join(lineas)
+    try:
+        payload = json.dumps({"chat_id": TG_CHAT, "text": texto}).encode("utf-8")
+        req = urllib.request.Request(
+            f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
+            data=payload,
+            headers={"Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            resp.read()
+        print(f"[TG] notificación enviada para {codigo}", flush=True)
+    except Exception as exc:
+        print(f"[TG] error enviando {codigo}: {exc}", flush=True)
 
-def title_case_sp(text: str) -> str:
-    """Title case preserving Spanish accented chars (ñ, á, é, í, ó, ú, ü)."""
-    if not text:
-        return text
-    return " ".join(
-        w[0].upper() + w[1:].lower() if w else ""
-        for w in text.split()
-    )
+# ---------------------------------------------------------------------------
+# Handler HTTP
+# ---------------------------------------------------------------------------
 
-def silver_clean(fields: dict) -> dict:
-    """Apply Silver-quality standardization to form fields."""
-    # Proper case: names, locations, areas
-    for key in ("nombre", "residencia", "area_estudio", "detalle_exp_atencion"):
-        if key in fields and fields[key]:
-            fields[key] = title_case_sp(fields[key])
+PAGES = {
+    "/": "index.html",
+    "/reservar": "reservar.html",
+    "/admin-reservas": "admin.html",
+}
+STATIC_PREFIXES = ("css/", "js/", "assets/")
+BLOCKED_PARTS = {"data", "submissions", "__pycache__", ".git"}
 
-    # Standardize: sexo
-    sexo = fields.get("sexo", "").lower()
-    if sexo in ("masculino", "m", "hombre", "varón", "varon"):
-        fields["sexo"] = "Masculino"
-    elif sexo in ("femenino", "f", "mujer"):
-        fields["sexo"] = "Femenino"
+class Handler(BaseHTTPRequestHandler):
+    server_version = "HotelPrincipe/1.0"
+    protocol_version = "HTTP/1.1"
 
-    # Standardize: si/no → Sí/No
-    for key in ("exp_atencion", "exp_cuadre_caja", "disponibilidad_rotativa", "idiomas"):
-        val = fields.get(key, "").lower().strip()
-        if val in ("si", "sí", "yes"):
-            fields[key] = "Sí"
-        elif val in ("no"):
-            fields[key] = "No"
-
-    # Standardize: nivel_academico
-    nivel = fields.get("nivel_academico", "").lower()
-    nivel_map = {
-        "bachillerato": "Bachillerato",
-        "pasante": "Pasante Universitario",
-        "pasante universitario": "Pasante Universitario",
-        "licenciatura": "Licenciatura o Ingeniería",
-        "licenciatura o ingeniería": "Licenciatura o Ingeniería",
-        "ingeniería": "Licenciatura o Ingeniería",
-        "ingenieria": "Licenciatura o Ingeniería",
-    }
-    if nivel in nivel_map:
-        fields["nivel_academico"] = nivel_map[nivel]
-
-    # Standardize: manejo_ofimatica
-    ofim = fields.get("manejo_ofimatica", "").lower()
-    ofim_map = {"basico": "Básico", "básico": "Básico",
-                "intermedio": "Intermedio", "avanzado": "Avanzado"}
-    if ofim in ofim_map:
-        fields["manejo_ofimatica"] = ofim_map[ofim]
-
-    # Lowercase: email
-    if "email" in fields:
-        fields["email"] = fields["email"].lower().strip()
-
-    # Capitalize: detalle_idiomas (free text but first letter caps)
-    if fields.get("detalle_idiomas"):
-        fields["detalle_idiomas"] = fields["detalle_idiomas"][0].upper() + fields["detalle_idiomas"][1:]
-
-    # Keep pregunta_situacional as-is (free text, raw voice)
-
-    return fields
-
-class HotelHandler(http.server.SimpleHTTPRequestHandler):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, directory=str(ROOT), **kwargs)
-
-    ACCESS_LOG = ROOT.parent / "hotel-stats" / "access.log"
-
-    def log_request(self, code='-', size='-'):
-        """Log request with IP, timestamp, method, path, status."""
-        ts = time.strftime('%Y-%m-%dT%H:%M:%S')
-        client_ip = self.client_address[0]
-        msg = f"{ts} | {client_ip} | {self.command} | {self.path} | {code}"
-        print(msg)
-        try:
-            with open(self.ACCESS_LOG, "a") as f:
-                f.write(msg + "\n")
-        except Exception:
-            pass
-
+    # -- headers de seguridad en TODAS las respuestas -----------------------
     def end_headers(self):
         self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header("X-Frame-Options", "DENY")
-        self.send_header("Referrer-Policy",
-                         "strict-origin-when-cross-origin")
-        self.send_header("Content-Security-Policy",
+        self.send_header("Referrer-Policy", "strict-origin-when-cross-origin")
+        self.send_header(
+            "Content-Security-Policy",
             "default-src 'self'; "
-            "script-src 'self' 'unsafe-inline'; "
-            "style-src 'self' 'unsafe-inline' "
-            "https://fonts.googleapis.com https://cdnjs.cloudflare.com; "
-            "font-src 'self' https://fonts.gstatic.com "
-            "https://cdnjs.cloudflare.com; "
-            "img-src 'self' data: https:; "
-            "form-action 'self'; "
-            "frame-ancestors 'none';")
+            "script-src 'self'; "
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+            "font-src https://fonts.gstatic.com; "
+            "img-src 'self' data:; "
+            "frame-src https://www.google.com; "
+            "connect-src 'self'; "
+            "base-uri 'self'; form-action 'self'"
+        )
         super().end_headers()
 
-    def do_GET(self):
-        parsed = urllib.parse.urlparse(self.path)
-        path = parsed.path
+    def log_message(self, fmt, *args):
+        print(f"[{self.log_date_time_string()}] {self.client_address[0]} {fmt % args}", flush=True)
 
-        if path.startswith("/submissions"):
-            self.send_error(403, "Forbidden")
-            return
+    # -- helpers de respuesta -----------------------------------------------
+    def _send(self, status, body, ctype="application/json; charset=utf-8", extra=None):
+        if isinstance(body, str):
+            body = body.encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", ctype)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        for k, v in (extra or {}).items():
+            self.send_header(k, v)
+        self.end_headers()
+        if self.command != "HEAD":
+            self.wfile.write(body)
+
+    def json_ok(self, data, status=200):
+        self._send(status, json.dumps(data, ensure_ascii=False))
+
+    def json_error(self, status, message):
+        self.json_ok({"ok": False, "error": message}, status=status)
+
+    def silent_reject(self):
+        """Anti-spam: 200 genérico para que el bot no aprenda qué lo detuvo."""
+        self.json_ok({"ok": True, "message": "Solicitud recibida. El hotel le contactará para confirmar."})
+
+    # -- GET -----------------------------------------------------------------
+    def do_HEAD(self):
+        path = urlparse(self.path).path
+        if path in PAGES or path == "/health":
+            self._send(200, b"", "text/html; charset=utf-8")
+        else:
+            self._send(404, b"", "text/plain; charset=utf-8")
+
+    def do_GET(self):
+        parsed = urlparse(self.path)
+        path = parsed.path
+        query = parse_qs(parsed.query)
+
+        if path == "/health":
+            try:
+                n = get_db().execute("SELECT COUNT(*) FROM reservas").fetchone()[0]
+            except Exception:
+                n = -1
+            return self.json_ok({"ok": True, "servicio": "hotel-principe", "reservas": n})
 
         if path == "/api/csrf":
-            token = generate_csrf_token()
-            body = json.dumps({"token": token}).encode("utf-8")
-            self.send_response(200)
-            self.send_header("Content-Type",
-                             "application/json; charset=utf-8")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
-            return
+            return self.json_ok({"ok": True, "token": issue_csrf()})
 
-        if path in ("/trabajo", "/trabajo/"):
-            path = "/trabajo.html"
-        elif path == "/":
-            path = "/index.html"
+        if path == "/api/admin/reservas":
+            return self.admin_list(query)
 
-        self.path = path
-        return super().do_GET()
+        if path in PAGES:
+            return self.serve_file(BASE_DIR / PAGES[path], "text/html; charset=utf-8")
 
-    def do_POST(self):
-        parsed = urllib.parse.urlparse(self.path)
+        rel = path.lstrip("/")
+        if rel.startswith(STATIC_PREFIXES):
+            target = (BASE_DIR / rel).resolve()
+            if (
+                target.is_relative_to(BASE_DIR)
+                and target.parts[len(BASE_DIR.parts)] not in BLOCKED_PARTS
+                and not any(p.startswith(".") for p in target.relative_to(BASE_DIR).parts)
+                and target.is_file()
+            ):
+                ctype = mimetypes.guess_type(str(target))[0] or "application/octet-stream"
+                return self.serve_file(target, ctype)
 
-        if parsed.path != "/api/trabajo":
-            self.send_error(404, "Not found")
-            return
+        self._send(404, "Página no encontrada.", "text/plain; charset=utf-8")
 
-        client_ip = self.client_address[0]
-
-        if not check_rate_limit(client_ip):
-            self._json_response(429, {
-                "ok": False,
-                "error": "Demasiadas solicitudes. Intente más tarde."})
-            return
-
-        content_type = self.headers.get("Content-Type", "")
-        content_length = int(self.headers.get("Content-Length", 0))
-
-        if content_length > MAX_BODY_SIZE:
-            self._json_response(400, {
-                "ok": False,
-                "error": "La solicitud excede el tamaño máximo permitido."})
-            return
-        if content_length == 0:
-            self._json_response(400, {
-                "ok": False,
-                "error": "No se recibieron datos."})
-            return
-
-        body = self.rfile.read(content_length)
-
-        print(f"[{time.strftime('%H:%M:%S')}] "
-              f"POST /api/trabajo — {content_length}B from {client_ip}")
-
+    def serve_file(self, target, ctype):
         try:
-            parsed_data = parse_multipart(body, content_type)
-            fields = parsed_data["fields"]
-            files = parsed_data["files"]
-        except Exception as e:
-            print(f"[{time.strftime('%H:%M:%S')}] "
-                  f"Multipart parse error: {e}")
-            self._json_response(400, {
-                "ok": False,
-                "error": "Error al procesar los datos del formulario."})
-            return
-
-        # ── Anti-spam ──
-
-        if fields.get("website", ""):
-            print(f"[{time.strftime('%H:%M:%S')}] "
-                  f"Spam blocked (honeypot) from {client_ip}")
-            self._json_response(200, {
-                "ok": True,
-                "message": "Solicitud recibida correctamente."})
-            return
-
-        load_ts = fields.get("_load_time", "")
-        if load_ts:
-            try:
-                elapsed = time.time() - float(load_ts)
-                if elapsed < MIN_FORM_TIME:
-                    print(f"[{time.strftime('%H:%M:%S')}] "
-                          f"Spam blocked (time: {elapsed:.1f}s)")
-                    self._json_response(200, {
-                        "ok": True,
-                        "message": "Solicitud recibida correctamente."})
-                    return
-            except (ValueError, TypeError):
-                pass
+            body = target.read_bytes()
+        except OSError:
+            return self._send(404, "Página no encontrada.", "text/plain; charset=utf-8")
+        extra = {}
+        if ctype.startswith("text/html"):
+            extra["Cache-Control"] = "no-cache"
         else:
-            print(f"[{time.strftime('%H:%M:%S')}] "
-                  f"Spam blocked (no timestamp) from {client_ip}")
-            self._json_response(200, {
-                "ok": True,
-                "message": "Solicitud recibida correctamente."})
-            return
+            extra["Cache-Control"] = "public, max-age=3600"
+        self._send(200, body, ctype, extra)
 
-        csrf = fields.get("csrf_token", "")
-        now = time.time()
-        csrf_expiry = csrf_tokens.get(csrf)
-        if not csrf_expiry or now > csrf_expiry:
-            print(f"[{time.strftime('%H:%M:%S')}] "
-                  f"Spam blocked (invalid CSRF) from {client_ip}")
-            self._json_response(200, {
-                "ok": True,
-                "message": "Solicitud recibida correctamente."})
-            return
-        del csrf_tokens[csrf]
-
-        # ── Validation ──
-
-        required_fields = [
-            "nombre", "sexo", "edad", "nivel_academico", "area_estudio",
-            "manejo_ofimatica", "exp_atencion", "exp_cuadre_caja",
-            "disponibilidad_rotativa", "idiomas", "pregunta_situacional",
-            "telefono", "email", "residencia"
-        ]
-
-        for field in required_fields:
-            if not fields.get(field, "").strip():
-                self._json_response(400, {
-                    "ok": False,
-                    "error": f"El campo '{field}' es obligatorio."})
-                return
-
-        for field, max_len in MAX_FIELD_LENGTHS.items():
-            if field in fields and len(fields[field]) > max_len:
-                self._json_response(400, {
-                    "ok": False,
-                    "error": f"El campo '{field}' excede la longitud "
-                             f"máxima permitida."})
-                return
-        # Email validation (L2 fix — robust regex)
-        email = fields.get("email", "").strip()
-        if not EMAIL_RE.match(email):
-            self._json_response(400, {
-                "ok": False,
-                "error": "El correo electrónico no es válido."})
-            return
-
-        # Phone validation: +504 XXXX-XXXX
-        if not re.match(r'^\d{4}-\d{4}$', fields.get("telefono", "")):
-            self._json_response(400, {
-                "ok": False,
-                "error": "El número de teléfono debe tener 8 dígitos "
-                         "(formato: +504 XXXX-XXXX)."})
-            return
-
+    # -- POST ----------------------------------------------------------------
+    def do_POST(self):
+        path = urlparse(self.path).path
         try:
-            edad = int(fields.get("edad", "0"))
-            if edad < 18 or edad > 99:
-                self._json_response(400, {
-                    "ok": False,
-                    "error": "La edad debe estar entre 18 y 99 años."})
-                return
+            length = int(self.headers.get("Content-Length", 0))
         except ValueError:
-            self._json_response(400, {
-                "ok": False,
-                "error": "La edad ingresada no es válida."})
-            return
-
-        cv_files = [f for f in files if f["name"] == "cv"]
-        if not cv_files:
-            self._json_response(400, {
-                "ok": False,
-                "error": "Debe adjuntar su Currículum Vitae en "
-                         "formato PDF."})
-            return
-
-        for f in cv_files:
-            if len(f["data"]) > MAX_FILE_SIZE:
-                self._json_response(400, {
-                    "ok": False,
-                    "error": "El archivo PDF excede el tamaño máximo "
-                             "de 5 MB."})
-                return
-            if not f["data"].startswith(b"%PDF"):
-                self._json_response(400, {
-                    "ok": False,
-                    "error": "El archivo adjunto no es un PDF válido."})
-                return
-            if not f["filename"].lower().endswith(".pdf"):
-                self._json_response(400, {
-                    "ok": False,
-                    "error": "Solamente se admiten archivos PDF."})
-                return
-
-        # ── Sanitize & Silver cleaning ──
-        sanitized = {}
-        for k, v in fields.items():
-            v = re.sub(r'<[^>]*>', '', v).strip()
-            sanitized[k] = v
-
-        # Silver transformations
-        sanitized = silver_clean(sanitized)
-
-        # ── Save ──
+            length = 0
+        if length <= 0 or length > MAX_BODY:
+            return self.json_error(400, "Solicitud inválida.")
+        raw = self.rfile.read(length)
         try:
-            result = save_submission(
-                sanitized, cv_files[0]["data"],
-                cv_files[0]["filename"], client_ip)
-            print(f"[{time.strftime('%H:%M:%S')}] "
-                  f"Submission saved: id={result['id']}")
-            # Send email notification in background thread
-            threading.Thread(
-                target=send_notification,
-                args=(sanitized, result["pdf"], result["id"]),
-                daemon=True
-            ).start()
-        except Exception as e:
-            print(f"[{time.strftime('%H:%M:%S')}] Save error: {e}")
-            self._json_response(500, {
-                "ok": False,
-                "error": "Error interno al guardar la solicitud."})
-            return
+            fields = json.loads(raw.decode("utf-8"))
+        except (ValueError, UnicodeDecodeError):
+            return self.json_error(400, "Solicitud inválida.")
+        if not isinstance(fields, dict):
+            return self.json_error(400, "Solicitud inválida.")
 
-        self._json_response(200, {
+        if path == "/api/reservas":
+            return self.crear_reserva(fields)
+        if path == "/api/admin/reservas/estado":
+            return self.admin_estado(fields)
+        self.json_error(404, "Ruta no encontrada.")
+
+    # -- lógica de reservas ---------------------------------------------------
+    def crear_reserva(self, f):
+        ip = self.client_address[0]
+
+        # Capa 1: honeypot
+        if _clean_text(f.get("website"), 200):
+            return self.silent_reject()
+
+        # Capa 2: time trap
+        load_ts = f.get("_load_time")
+        try:
+            elapsed = time.time() - float(load_ts)
+        except (TypeError, ValueError):
+            return self.silent_reject()
+        if elapsed < MIN_FORM_SECONDS or elapsed > MAX_FORM_SECONDS:
+            return self.silent_reject()
+
+        # Capa 3: CSRF de un solo uso
+        if not consume_csrf(f.get("csrf_token")):
+            return self.silent_reject()
+
+        # Rate limit explícito (este sí devuelve 429)
+        if rate_limited(ip):
+            return self.json_error(429, "Ha enviado varias solicitudes en poco tiempo. Espere unos minutos o contáctenos por teléfono.")
+
+        datos, error = validar_reserva(f)
+        if error:
+            return self.json_error(422, error)
+
+        db = get_db()
+        codigo = generar_codigo(db)
+        db.execute(
+            """INSERT INTO reservas
+               (codigo, nombre, telefono, email, fecha_llegada, fecha_salida,
+                noches, habitaciones, huespedes, mensaje, ip)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+            (codigo, datos["nombre"], datos["telefono"], datos["email"],
+             datos["fecha_llegada"], datos["fecha_salida"], datos["noches"],
+             datos["habitaciones"], datos["huespedes"], datos["mensaje"], ip),
+        )
+        db.commit()
+        print(f"[RESERVA] {codigo} {datos['nombre']} {datos['fecha_llegada']}→{datos['fecha_salida']}", flush=True)
+
+        threading.Thread(target=notificar_telegram, args=(datos, codigo), daemon=True).start()
+
+        self.json_ok({
             "ok": True,
-            "message": "Solicitud recibida correctamente.",
-            "id": result["id"],
+            "codigo": codigo,
+            "nombre": datos["nombre"],
+            "fecha_llegada": datos["fecha_llegada"],
+            "fecha_salida": datos["fecha_salida"],
+            "noches": datos["noches"],
+            "habitaciones": datos["habitaciones"],
+            "huespedes": datos["huespedes"],
+            "message": "Solicitud de reserva recibida. El hotel le contactará para confirmar disponibilidad.",
         })
 
-    def _json_response(self, status: int, data: dict):
-        body = json.dumps(data, ensure_ascii=False).encode("utf-8")
-        self.send_response(status)
-        self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Content-Length", str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
+    # -- administración -------------------------------------------------------
+    def _check_admin_key(self, key):
+        if not ADMIN_KEY:
+            self.json_error(503, "La administración no está configurada en este servidor.")
+            return False
+        if not key or not hmac.compare_digest(str(key), ADMIN_KEY):
+            self.json_error(401, "Llave de administración incorrecta.")
+            return False
+        return True
 
-    def do_OPTIONS(self):
-        self.send_response(204)
-        self.end_headers()
+    def admin_list(self, query):
+        if not self._check_admin_key((query.get("key") or [""])[0]):
+            return
+        estado = (query.get("estado") or [""])[0]
+        db = get_db()
+        if estado in ESTADOS:
+            rows = db.execute(
+                "SELECT * FROM reservas WHERE estado=? ORDER BY id DESC LIMIT 200", (estado,)
+            ).fetchall()
+        else:
+            rows = db.execute("SELECT * FROM reservas ORDER BY id DESC LIMIT 200").fetchall()
+        conteo = {e: db.execute("SELECT COUNT(*) FROM reservas WHERE estado=?", (e,)).fetchone()[0] for e in ESTADOS}
+        self.json_ok({"ok": True, "reservas": [dict(r) for r in rows], "conteo": conteo})
 
+    def admin_estado(self, f):
+        if not self._check_admin_key(f.get("key")):
+            return
+        codigo = _clean_text(f.get("codigo"), 20)
+        estado = _clean_text(f.get("estado"), 20)
+        if estado not in ESTADOS:
+            return self.json_error(422, "Estado inválido.")
+        db = get_db()
+        cur = db.execute(
+            "UPDATE reservas SET estado=?, updated_at=datetime('now','localtime') WHERE codigo=?",
+            (estado, codigo),
+        )
+        db.commit()
+        if cur.rowcount == 0:
+            return self.json_error(404, "No existe una reserva con ese código.")
+        self.json_ok({"ok": True, "codigo": codigo, "estado": estado})
 
-# ── Main ────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
 
 def main():
     init_db()
-    server = http.server.ThreadingHTTPServer((HOST, PORT), HotelHandler)
+    server = ThreadingHTTPServer((HOST, PORT), Handler)
     server.daemon_threads = True
-    print(f"Hotel Príncipe — server: http://{HOST}:{PORT}")
-    print(f"Document root: {ROOT}")
-    print(f"DB: {DB_PATH}")
-    print(f"PDFs: {PDF_DIR}")
-    print(f"Formulario de empleo: http://{HOST}:{PORT}/trabajo")
+    print(f"Hotel Príncipe escuchando en http://{HOST}:{PORT}", flush=True)
+    print(f"  Telegram: {'configurado' if TG_TOKEN and TG_CHAT else 'NO configurado (solo SQLite)'}", flush=True)
+    print(f"  Admin:    {'habilitado' if ADMIN_KEY else 'deshabilitado (falta ADMIN_KEY)'}", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        print("\nShutting down.")
-        server.server_close()
-
+        print("Apagando…", flush=True)
+        server.shutdown()
 
 if __name__ == "__main__":
     main()
