@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Josefin+Sans:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style.css?v=20261117c">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -72,14 +72,14 @@
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      {"@type": "Question", "name": "¿Cómo hago una reserva?", "acceptedAnswer": {"@type": "Answer", "text": "Complete el formulario en nuestra página de reservas con sus fechas y datos. Recibirá un código de solicitud (HP-XXXXXX) y el hotel le confirmará la disponibilidad por teléfono o WhatsApp. No se cobra nada por adelantado."}},
-      {"@type": "Question", "name": "¿Cuándo y cómo pago?", "acceptedAnswer": {"@type": "Answer", "text": "El pago se realiza al llegar al hotel. Aceptamos efectivo, tarjeta y transferencia."}},
+      {"@type": "Question", "name": "¿Cómo hago una reserva?", "acceptedAnswer": {"@type": "Answer", "text": "Complete el formulario en nuestra página de reservas con sus fechas y datos. Recibirá un código de solicitud (HP-XXXXXX) y el hotel le confirmará la disponibilidad por teléfono o WhatsApp. La reserva se confirma con un depósito del 50% del monto total de la estadía."}},
+      {"@type": "Question", "name": "¿Cuándo y cómo pago?", "acceptedAnswer": {"@type": "Answer", "text": "Para confirmar su reserva se abona un depósito del 50% del monto total de la estadía. El saldo restante se paga al llegar al hotel. Aceptamos efectivo, tarjeta y transferencia."}},
       {"@type": "Question", "name": "¿A qué hora es el check-in y el check-out?", "acceptedAnswer": {"@type": "Answer", "text": "El check-in es a partir de las 3:00 p.m. y el check-out hasta las 11:00 a.m. La recepción está abierta las 24 horas, así que no hay problema si su viaje llega de noche."}},
       {"@type": "Question", "name": "¿La recepción está abierta de noche?", "acceptedAnswer": {"@type": "Answer", "text": "Sí. Nuestra recepción atiende las 24 horas, todos los días. Si llega de madrugada o sale temprano, siempre habrá alguien para atenderle."}},
       {"@type": "Question", "name": "¿Ofrecen desayuno?", "acceptedAnswer": {"@type": "Answer", "text": "Sí, cada mañana preparamos un desayuno típico hondureño para que empiece el día con sabor local."}},
       {"@type": "Question", "name": "¿Dónde están ubicados?", "acceptedAnswer": {"@type": "Answer", "text": "En el corazón de La Ceiba: Barrio El Centro, entre la Avenida San Isidro y la Avenida 14 de Julio, 7 Calle. En la sección Ubicación encuentra el mapa y el enlace para abrirlo en Google Maps."}},
       {"@type": "Question", "name": "¿Qué tan lejos están del aeropuerto, la terminal de buses y el muelle?", "acceptedAnswer": {"@type": "Answer", "text": "El aeropuerto de La Ceiba está a unos 15 minutos del hotel; la terminal de buses, a unos 7 minutos; y el muelle de cabotaje, a unos 8 minutos."}},
-      {"@type": "Question", "name": "¿Puedo cambiar o cancelar mi solicitud?", "acceptedAnswer": {"@type": "Answer", "text": "Sí. Llámenos al +504 2443-0516 o escríbanos por WhatsApp al +504 9451-9992 y con gusto le ayudamos. Como no se cobra por adelantado, modificar su solicitud es sencillo."}}
+      {"@type": "Question", "name": "¿Puedo cambiar o cancelar mi solicitud?", "acceptedAnswer": {"@type": "Answer", "text": "Sí. Llámenos al +504 2443-0516 o escríbanos por WhatsApp al +504 9451-9992 y con gusto le ayudamos. Si aún no ha abonado el depósito, modificar su solicitud es sencillo."}}
     ]
   }
   </script>
@@ -141,6 +141,7 @@
               <div class="fact-row"><dt>Alrededores</dt><dd>Súper céntricos: bancos, farmacias, tiendas y restaurantes a la vuelta</dd></div>
               <div class="fact-row"><dt>Recepción</dt><dd>24 horas</dd></div>
               <div class="fact-row"><dt>Desayuno</dt><dd>Típico hondureño</dd></div>
+              <div class="fact-row"><dt>Reserva</dt><dd>Depósito del 50% para confirmar</dd></div>
               <div class="fact-row"><dt>Pago</dt><dd>Efectivo, tarjeta o transferencia</dd></div>
             </dl>
           </aside>
@@ -184,11 +185,43 @@
           </article>
           <article class="room-card room-cta">
             <h3>Reserve su destino</h3>
-            <p>Sin pagos por adelantado: complete su solicitud en línea y le confirmamos la disponibilidad por teléfono o WhatsApp.</p>
+            <p>Complete su solicitud en línea y le confirmamos la disponibilidad por teléfono o WhatsApp. Su reserva se asegura con un depósito del 50% del total de la estadía.</p>
             <a class="btn btn-gold" href="/reservar">Reservar su estadía</a>
           </article>
         </div>
         <p class="rooms-note">¿Quiere ver una habitación en particular? <a href="https://wa.me/50494519992" target="_blank" rel="noopener noreferrer">Escríbanos por WhatsApp</a> y con gusto le enviamos fotos.</p>
+      </div>
+    </section>
+
+    <!-- Cómo reservar -->
+    <section class="booking-band" id="como-reservar">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="label">Reservas</span>
+          <h2>Su estadía, en tres pasos</h2>
+          <p class="lead">Un proceso claro y sin pagos en línea: el hotel le confirma la disponibilidad y el depósito que asegura su reserva.</p>
+        </div>
+        <ol class="booking-steps">
+          <li class="booking-step">
+            <span class="step-num" aria-hidden="true">01</span>
+            <h3>Solicitud en línea</h3>
+            <p>Complete el formulario con sus fechas y datos de contacto. Al instante recibe su código de reserva HP-XXXXXX.</p>
+          </li>
+          <li class="booking-step">
+            <span class="step-num" aria-hidden="true">02</span>
+            <h3>Confirmación y depósito</h3>
+            <p>Le contactamos por teléfono o WhatsApp con el monto total de la estadía. La reserva se confirma con un depósito del <strong>50%</strong>, en efectivo, tarjeta o transferencia.</p>
+          </li>
+          <li class="booking-step">
+            <span class="step-num" aria-hidden="true">03</span>
+            <h3>Llegada al hotel</h3>
+            <p>Presente su código en recepción y cancele el saldo restante. Check-in desde las 3:00 p.m. y recepción abierta las 24 horas.</p>
+          </li>
+        </ol>
+        <div class="steps-actions">
+          <a class="btn btn-gold" href="/reservar">Comenzar mi solicitud</a>
+          <a class="btn btn-outline" href="/#preguntas">Ver preguntas frecuentes</a>
+        </div>
       </div>
     </section>
 
@@ -279,7 +312,9 @@
           </div>
         </div>
         <figure class="facade-figure">
-          <img src="/assets/images/fachada-hotel-principe.jpg" alt="Fachada del edificio del Hotel Príncipe en Barrio El Centro, La Ceiba: rótulo HOTEL PRÍNCIPE con corona dorada sobre la entrada, a la izquierda" width="1600" height="994" loading="lazy" decoding="async">
+          <div class="facade-frame">
+            <img src="/assets/images/fachada-hotel-principe.jpg" alt="Fachada del edificio del Hotel Príncipe en Barrio El Centro, La Ceiba: rótulo HOTEL PRÍNCIPE con corona dorada sobre la entrada, a la izquierda" width="1600" height="994" loading="lazy" decoding="async">
+          </div>
           <figcaption>Nuestra fachada en el corazón de La Ceiba. Al llegar, busque el rótulo <strong>HOTEL PRÍNCIPE</strong> con la corona dorada sobre la entrada.</figcaption>
         </figure>
       </div>
@@ -295,11 +330,11 @@
         <div class="faq-list">
           <details class="faq-item" open>
             <summary>¿Cómo hago una reserva?</summary>
-            <div class="faq-answer"><p>Complete el formulario en nuestra página de reservas con sus fechas y datos. Recibirá un código de solicitud (HP-XXXXXX) y el hotel le confirmará la disponibilidad por teléfono o WhatsApp. No se cobra nada por adelantado.</p></div>
+            <div class="faq-answer"><p>Complete el formulario en nuestra página de reservas con sus fechas y datos. Recibirá un código de solicitud (HP-XXXXXX) y el hotel le confirmará la disponibilidad por teléfono o WhatsApp. La reserva se confirma con un depósito del 50% del monto total de la estadía.</p></div>
           </details>
           <details class="faq-item">
             <summary>¿Cuándo y cómo pago?</summary>
-            <div class="faq-answer"><p>El pago se realiza al llegar al hotel. Aceptamos efectivo, tarjeta y transferencia.</p></div>
+            <div class="faq-answer"><p>Para confirmar su reserva se abona un depósito del 50% del monto total de la estadía. El saldo restante se paga al llegar al hotel. Aceptamos efectivo, tarjeta y transferencia.</p></div>
           </details>
           <details class="faq-item">
             <summary>¿A qué hora es el check-in y el check-out?</summary>
@@ -323,7 +358,7 @@
           </details>
           <details class="faq-item">
             <summary>¿Puedo cambiar o cancelar mi solicitud?</summary>
-            <div class="faq-answer"><p>Sí. Llámenos al +504 2443-0516 o escríbanos por WhatsApp al +504 9451-9992 y con gusto le ayudamos. Como no se cobra por adelantado, modificar su solicitud es sencillo.</p></div>
+            <div class="faq-answer"><p>Sí. Llámenos al +504 2443-0516 o escríbanos por WhatsApp al +504 9451-9992 y con gusto le ayudamos. Si aún no ha abonado el depósito, modificar su solicitud es sencillo.</p></div>
           </details>
         </div>
       </div>
@@ -333,7 +368,7 @@
     <section class="cta-band">
       <h2>Reserve su estadía con anticipación</h2>
       <div class="ornament" aria-hidden="true">◆</div>
-      <p>Envíe su solicitud en línea y le confirmaremos por teléfono o WhatsApp. Sin pagos por adelantado: pague al llegar, en efectivo, tarjeta o transferencia.</p>
+      <p>Envíe su solicitud en línea y le confirmaremos por teléfono o WhatsApp. Su reserva se confirma con un depósito del 50% del total de la estadía; el saldo se paga al llegar, en efectivo, tarjeta o transferencia.</p>
       <div class="hero-actions">
         <a class="btn btn-cream" href="/reservar">Reservar ahora</a>
         <a class="btn btn-outline" href="tel:+50424430516">Llamar al hotel</a>
@@ -388,6 +423,6 @@
     </div>
   </footer>
 
-  <script src="/js/main.js" defer></script>
+  <script src="/js/main.js?v=20261117c" defer></script>
 </body>
 </html>

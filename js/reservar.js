@@ -76,9 +76,11 @@
     if (n > 0) {
       var hab = parseInt(habitaciones.value, 10);
       var hue = parseInt(huespedes.value, 10);
-      summary.textContent = n + (n === 1 ? " noche" : " noches") + " · " +
+      summary.innerHTML =
+        '<span class="summary-line">' + n + (n === 1 ? " noche" : " noches") + " · " +
         hab + (hab === 1 ? " habitación" : " habitaciones") + " · " +
-        hue + (hue === 1 ? " huésped" : " huéspedes");
+        hue + (hue === 1 ? " huésped" : " huéspedes") + "</span>" +
+        '<span class="summary-deposit">Depósito del 50% para confirmar · saldo al llegar</span>';
       summary.classList.add("visible");
     } else {
       summary.classList.remove("visible");
@@ -237,7 +239,7 @@
       "Nombre: " + d.nombre + "\n" +
       "Llegada: " + d.fecha_llegada + " · Salida: " + d.fecha_salida + " (" + d.noches + " noches)\n" +
       "Habitaciones: " + d.habitaciones + " · Huéspedes: " + d.huespedes + "\n" +
-      "Quedo atento a su confirmación. Gracias.";
+      "Quedo atento a la confirmación y al detalle del depósito del 50%. Gracias.";
     document.getElementById("successWa").href = "https://wa.me/50494519992?text=" + encodeURIComponent(texto);
 
     panel.classList.add("visible");

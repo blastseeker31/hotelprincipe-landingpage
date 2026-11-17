@@ -96,7 +96,14 @@ h3 { font-size: 1.25rem; }
 .lead { font-size: 1.1rem; color: var(--ink-soft); }
 
 .section-head { margin-bottom: 2.5rem; }
-.section-head .label { display: block; margin-bottom: 0.7rem; }
+.section-head .label { display: inline-flex; align-items: center; gap: 0.9rem; margin-bottom: 0.7rem; }
+.section-head .label::after { content: ""; width: 3rem; height: 1px; background: var(--gold-soft); }
+html.js .section-head .label::after {
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+}
+html.js .section-head.revealed .label::after,
+html.js .revealed .section-head .label::after { transform: scaleX(1); }
 
 /* Ornamento dorado: ─── ◆ ─── */
 .ornament {
@@ -123,18 +130,18 @@ h3 { font-size: 1.25rem; }
   border-radius: var(--radius);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease, transform 0.2s ease;
 }
 .btn:active { transform: translateY(1px); }
 
 .btn-gold { background: var(--gold-dark); color: #FBF9F4; border-color: var(--gold-dark); }
-.btn-gold:hover { background: #6A5227; border-color: #6A5227; }
+.btn-gold:hover { background: #6A5227; border-color: #6A5227; box-shadow: 0 4px 14px rgba(126, 99, 48, 0.22); }
 
 .btn-outline { background: transparent; color: var(--gold-dark); border-color: var(--gold); }
 .btn-outline:hover { background: var(--gold-dark); color: #FBF9F4; }
 
 .btn-green { background: var(--green); color: #F4F7F4; border-color: var(--green); }
-.btn-green:hover { background: var(--green-dark); border-color: var(--green-dark); }
+.btn-green:hover { background: var(--green-dark); border-color: var(--green-dark); box-shadow: 0 4px 14px rgba(46, 75, 63, 0.22); }
 
 .btn-cream { background: var(--cream); color: var(--ink); border-color: var(--cream); }
 .btn-cream:hover { background: var(--gold-soft); border-color: var(--gold-soft); }
@@ -169,10 +176,16 @@ h3 { font-size: 1.25rem; }
   color: var(--ink-soft); text-decoration: none;
   white-space: nowrap;
   padding: 0.4rem 0;
-  border-bottom: 1px solid transparent;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  transition: color 0.25s ease;
 }
-.nav-links a:not(.btn):hover { color: var(--gold-dark); border-bottom-color: var(--gold-soft); }
+.nav-links a:not(.btn)::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: var(--gold); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-links a:not(.btn):hover, .nav-links a:not(.btn).active { color: var(--gold-dark); }
+.nav-links a:not(.btn):hover::after, .nav-links a:not(.btn).active::after { transform: scaleX(1); }
 .nav-links .btn { min-height: 42px; padding: 0.55rem 1.5rem; }
 
 .nav-toggle {
@@ -190,7 +203,7 @@ h3 { font-size: 1.25rem; }
 
 .hero {
   text-align: center;
-  padding: 4.5rem 1.5rem 4rem;
+  padding: 5rem 1.5rem 4.5rem;
   background:
     radial-gradient(ellipse 70% 55% at 50% 0%, #FFFDF8 0%, transparent 70%),
     var(--cream);
@@ -211,11 +224,23 @@ h3 { font-size: 1.25rem; }
   color: var(--ink-soft);
 }
 
+/* Entrada del hero — una sola vez, sutil */
+@keyframes heroIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.hero-logo, .hero .ornament, .hero-tagline, .hero-sub, .hero-actions, .hero-note {
+  animation: heroIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero .ornament { animation-delay: 0.08s; }
+.hero-tagline { animation-delay: 0.16s; }
+.hero-sub { animation-delay: 0.24s; }
+.hero-actions { animation-delay: 0.32s; }
+.hero-note { animation-delay: 0.4s; }
+
 /* --------------------------------------------------------------------------
    Secciones
    -------------------------------------------------------------------------- */
 
-.section { padding: 4.5rem 0; }
+.section { padding: 5rem 0; }
+section[id] { scroll-margin-top: 92px; }
 .section-alt { background: var(--cream-deep); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 
 /* El Hotel — split editorial asimétrico */
@@ -252,9 +277,9 @@ h3 { font-size: 1.25rem; }
   background: var(--surface);
   border: 1px solid var(--line);
   padding: 2rem;
-  transition: border-color 0.25s ease, transform 0.25s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-.service-card:hover { border-color: var(--gold-soft); transform: translateY(-3px); }
+.service-card:hover { border-color: var(--gold-soft); box-shadow: 0 8px 26px rgba(35, 32, 25, 0.07); }
 .service-card.span-7 { grid-column: span 7; }
 .service-card.span-5 { grid-column: span 5; }
 .service-card.span-4 { grid-column: span 4; }
@@ -300,6 +325,9 @@ h3 { font-size: 1.25rem; }
 .map-col .map-frame { flex: 1; }
 .facade-figure { margin: 2.8rem 0 0; padding: 0.6rem; border: 1px solid var(--line); background: var(--surface); }
 .facade-figure img { display: block; width: 100%; height: auto; max-height: 460px; object-fit: cover; object-position: center 45%; }
+.facade-frame { overflow: hidden; }
+.facade-frame img { transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1); }
+.facade-figure:hover .facade-frame img { transform: scale(1.025); }
 .facade-figure figcaption { margin: 0.75rem 0.2rem 0.15rem; font-size: 0.85rem; font-style: italic; color: var(--ink-soft); text-align: center; }
 .facade-figure figcaption strong { color: var(--gold-dark); font-style: normal; font-weight: 500; }
 
@@ -421,7 +449,10 @@ h3 { font-size: 1.25rem; }
   font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--ink-soft);
 }
-.stay-summary.visible { display: block; }
+.stay-summary.visible { display: block; animation: summaryIn 0.35s ease both; }
+@keyframes summaryIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.stay-summary .summary-line { display: block; }
+.stay-summary .summary-deposit { display: block; margin-top: 0.4rem; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gold-dark); }
 
 .form-alert {
   display: none;
@@ -443,7 +474,7 @@ h3 { font-size: 1.25rem; }
 
 /* Panel de éxito */
 .success-panel { display: none; text-align: center; }
-.success-panel.visible { display: block; }
+.success-panel.visible { display: block; animation: heroIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .success-mark {
   width: 64px; height: 64px; margin: 0 auto 1.4rem;
   border-radius: 50%; border: 2px solid var(--ok);
@@ -451,6 +482,9 @@ h3 { font-size: 1.25rem; }
   color: var(--ok);
 }
 .success-mark svg { width: 30px; height: 30px; }
+.success-mark svg path { stroke-dasharray: 26; stroke-dashoffset: 26; }
+.success-panel.visible .success-mark svg path { animation: checkDraw 0.55s ease 0.2s forwards; }
+@keyframes checkDraw { to { stroke-dashoffset: 0; } }
 .success-code {
   font-family: var(--font-display); font-size: 2.4rem; font-weight: 600;
   letter-spacing: 0.06em; color: var(--gold-dark);
@@ -564,6 +598,42 @@ h3 { font-size: 1.25rem; }
 .toast.error { background: var(--error); }
 
 /* --------------------------------------------------------------------------
+   Cómo reservar — banda verde editorial
+   -------------------------------------------------------------------------- */
+
+.booking-band { background: var(--green); color: #DCE5DC; padding: 5rem 0; }
+.booking-band .label { color: var(--gold-soft); }
+.booking-band .label::after { background: rgba(201, 177, 131, 0.5); }
+.booking-band h2 { color: #F4F7F4; }
+.booking-band .section-head .lead { color: #C3D2C3; max-width: 64ch; }
+.booking-steps {
+  list-style: none; display: grid; grid-template-columns: repeat(3, 1fr);
+  margin: 0 0 2.6rem;
+}
+.booking-step { padding: 0.4rem 2.2rem 0.4rem 0; }
+.booking-step + .booking-step { border-left: 1px solid rgba(201, 177, 131, 0.28); padding-left: 2.2rem; }
+.step-num {
+  display: block; font-family: var(--font-display); font-size: 2.6rem; font-weight: 500;
+  line-height: 1; color: var(--gold-soft); margin-bottom: 1rem;
+}
+.booking-step h3 { color: #F4F7F4; font-size: 1.3rem; margin-bottom: 0.55rem; }
+.booking-step p { font-size: 0.95rem; color: #C3D2C3; }
+.booking-step strong { color: #F0E6D2; font-weight: 500; }
+.steps-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.booking-band .btn-outline { color: var(--gold-soft); border-color: var(--gold-soft); }
+.booking-band .btn-outline:hover { background: var(--gold-soft); color: var(--ink); border-color: var(--gold-soft); }
+
+/* --------------------------------------------------------------------------
+   Revelado al scroll — sutil, una sola vez, sin JS el contenido es visible
+   -------------------------------------------------------------------------- */
+
+html.js .reveal {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html.js .reveal.revealed { opacity: 1; transform: none; }
+
+/* --------------------------------------------------------------------------
    Responsive
    -------------------------------------------------------------------------- */
 
@@ -572,17 +642,19 @@ h3 { font-size: 1.25rem; }
 .room-card {
   background: var(--surface); border: 1px solid var(--line);
   padding: 2rem; display: flex; flex-direction: column;
-  transition: border-color 0.25s ease, transform 0.25s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-.room-card:hover { border-color: var(--gold-soft); transform: translateY(-3px); }
+.room-card:hover { border-color: var(--gold-soft); box-shadow: 0 8px 26px rgba(35, 32, 25, 0.07); }
 .room-index {
   font-family: var(--font-label); font-size: 0.78rem; letter-spacing: 0.22em;
   color: var(--gold-dark); margin-bottom: 0.85rem;
+  transition: color 0.3s ease;
 }
+.room-card:hover .room-index { color: var(--gold); }
 .room-card h3 { font-size: 1.45rem; margin-bottom: 0.55rem; }
 .room-card p { color: var(--ink-soft); font-size: 0.95rem; }
 .room-cta { background: var(--green); border-color: var(--green); }
-.room-cta:hover { border-color: var(--green-dark); }
+.room-cta:hover { border-color: var(--green-dark); box-shadow: 0 8px 26px rgba(36, 60, 50, 0.16); }
 .room-cta h3 { color: #F4F7F4; }
 .room-cta p { color: rgba(244, 247, 244, 0.85); margin-bottom: 1.5rem; }
 .room-cta .btn { align-self: flex-start; margin-top: auto; }
@@ -602,11 +674,14 @@ h3 { font-size: 1.25rem; }
 .faq-item summary::after {
   content: "+"; font-family: var(--font-label); font-size: 1.5rem; line-height: 1;
   color: var(--gold-dark); flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.faq-item[open] summary::after { content: "−"; }
+.faq-item[open] summary::after { transform: rotate(45deg); }
 .faq-item summary:hover { color: var(--gold-dark); }
 .faq-item summary:focus-visible { outline: 2px solid var(--gold-dark); outline-offset: 4px; }
 .faq-answer { padding: 0 0 1.3rem; }
+.faq-item[open] .faq-answer { animation: faqIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes faqIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 .faq-answer p { color: var(--ink-soft); font-size: 0.95rem; max-width: 68ch; }
 
 @media (max-width: 960px) {
@@ -618,6 +693,9 @@ h3 { font-size: 1.25rem; }
   .service-card.span-4 { grid-column: span 6; }
   .map-frame { min-height: 320px; }
   .facade-figure { margin-top: 2.2rem; }
+  .booking-steps { grid-template-columns: 1fr; gap: 1.8rem; }
+  .booking-step { padding: 0; }
+  .booking-step + .booking-step { border-left: none; padding-left: 0; border-top: 1px solid rgba(201, 177, 131, 0.28); padding-top: 1.8rem; }
 }
 
 @media (max-width: 760px) {
@@ -634,7 +712,8 @@ h3 { font-size: 1.25rem; }
 
   .hero { padding: 3rem 1.2rem 2.8rem; }
   .hero-logo { width: min(260px, 72vw); }
-  .section { padding: 3.2rem 0; }
+  .section { padding: 3.5rem 0; }
+  .booking-band { padding: 3.5rem 0; }
   .form-card { padding: 1.8rem 1.4rem; }
   .form-row { grid-template-columns: 1fr; gap: 0; }
   .service-card.span-4 { grid-column: span 12; }
