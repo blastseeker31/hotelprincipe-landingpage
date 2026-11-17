@@ -278,6 +278,11 @@ PAGES = {
     "/admin-reservas": "admin.html",
 }
 STATIC_PREFIXES = ("css/", "js/", "assets/")
+SEO_FILES = {
+    "/robots.txt": ("robots.txt", "text/plain; charset=utf-8"),
+    "/sitemap.xml": ("sitemap.xml", "application/xml; charset=utf-8"),
+    "/manifest.webmanifest": ("manifest.webmanifest", "application/manifest+json; charset=utf-8"),
+}
 BLOCKED_PARTS = {"data", "submissions", "__pycache__", ".git"}
 
 class Handler(BaseHTTPRequestHandler):
@@ -312,7 +317,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("Cache-Control", "no-store")
+        if not (extra and "Cache-Control" in extra):
+            self.send_header("Cache-Control", "no-store")
         for k, v in (extra or {}).items():
             self.send_header(k, v)
         self.end_headers()
@@ -354,6 +360,10 @@ class Handler(BaseHTTPRequestHandler):
 
         if path == "/api/admin/reservas":
             return self.admin_list(query)
+
+        if path in SEO_FILES:
+            fname, ctype = SEO_FILES[path]
+            return self.serve_file(BASE_DIR / fname, ctype)
 
         if path in PAGES:
             return self.serve_file(BASE_DIR / PAGES[path], "text/html; charset=utf-8")

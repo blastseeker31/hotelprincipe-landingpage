@@ -1,0 +1,15 @@
+{
+  "name": "Hotel Príncipe — La Ceiba, Atlántida",
+  "short_name": "Hotel Príncipe",
+  "description": "Hotel familiar en el corazón de La Ceiba. Reserve su estadía en línea.",
+  "lang": "es-HN",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F7F4EF",
+  "theme_color": "#F7F4EF",
+  "icons": [
+    {"src": "/assets/images/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "/assets/images/crown-favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}
+  ]
+}

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin-reservas
+Disallow: /api/
+Disallow: /data/
+Disallow: /submissions/
+
+Sitemap: https://hotelprincipelcb.com/sitemap.xml

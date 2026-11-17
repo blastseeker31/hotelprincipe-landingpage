@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#F7F4EF">
   <title>Hotel Príncipe — La Ceiba, Atlántida | Reservas en línea</title>
   <meta name="description" content="Hotel familiar en el centro de La Ceiba, Atlántida. 29 habitaciones con nombres de destinos de Honduras, desayuno típico, recepción 24 horas. Reserve su estadía en línea.">
   <link rel="canonical" href="https://hotelprincipelcb.com/">
@@ -12,12 +13,19 @@
   <meta property="og:title" content="Hotel Príncipe — La Ceiba, Atlántida">
   <meta property="og:description" content="Hospitalidad hondureña en el corazón de La Ceiba. Reserve su estadía en línea: le confirmamos por teléfono o WhatsApp.">
   <meta property="og:url" content="https://hotelprincipelcb.com/">
-  <meta property="og:image" content="https://hotelprincipelcb.com/assets/images/logo-hotel-principe.png">
+  <meta property="og:image" content="https://hotelprincipelcb.com/assets/images/fachada-og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Fachada del Hotel Príncipe en el corazón de La Ceiba, Atlántida">
   <meta property="og:locale" content="es_HN">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hotel Príncipe — La Ceiba, Atlántida">
+  <meta name="twitter:description" content="Hospitalidad hondureña en el corazón de La Ceiba. Reserve su estadía en línea: le confirmamos por teléfono o WhatsApp.">
+  <meta name="twitter:image" content="https://hotelprincipelcb.com/assets/images/fachada-og.jpg">
   <link rel="icon" type="image/png" sizes="512x512" href="/assets/images/crown-favicon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Josefin+Sans:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -45,11 +53,30 @@
       {"@type": "LocationFeatureSpecification", "name": "Recepción 24 horas", "value": true},
       {"@type": "LocationFeatureSpecification", "name": "Limpieza diaria", "value": true}
     ],
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "00:00", "closes": "23:59"
+    }],
     "geo": {"@type": "GeoCoordinates", "latitude": 15.7829, "longitude": -86.7918},
     "sameAs": ["https://www.facebook.com/hotelprincipelcb", "https://www.instagram.com/hotelprincipelcb/"],
-    "image": "https://hotelprincipelcb.com/assets/images/logo-hotel-principe.png",
+    "image": "https://hotelprincipelcb.com/assets/images/fachada-og.jpg",
     "description": "Hotel familiar en el corazón de La Ceiba, Atlántida. 29 habitaciones con nombres de destinos de Honduras, desayuno típico y recepción 24 horas.",
     "paymentAccepted": "Efectivo, Tarjeta, Transferencia"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "¿Cómo hago una reserva?", "acceptedAnswer": {"@type": "Answer", "text": "Complete el formulario en nuestra página de reservas con sus fechas y datos. Recibirá un código de solicitud (HP-XXXXXX) y el hotel le confirmará la disponibilidad por teléfono o WhatsApp. No se cobra nada por adelantado."}},
+      {"@type": "Question", "name": "¿Cuándo y cómo pago?", "acceptedAnswer": {"@type": "Answer", "text": "El pago se realiza al llegar al hotel. Aceptamos efectivo, tarjeta y transferencia."}},
+      {"@type": "Question", "name": "¿La recepción está abierta de noche?", "acceptedAnswer": {"@type": "Answer", "text": "Sí. Nuestra recepción atiende las 24 horas, todos los días. Si llega de madrugada o sale temprano, siempre habrá alguien para atenderle."}},
+      {"@type": "Question", "name": "¿Ofrecen desayuno?", "acceptedAnswer": {"@type": "Answer", "text": "Sí, cada mañana preparamos un desayuno típico hondureño para que empiece el día con sabor local."}},
+      {"@type": "Question", "name": "¿Dónde están ubicados?", "acceptedAnswer": {"@type": "Answer", "text": "En el corazón de La Ceiba: Barrio El Centro, entre la Avenida San Isidro y la Avenida 14 de Julio, 7 Calle. En la sección Ubicación encuentra el mapa y el enlace para abrirlo en Google Maps."}},
+      {"@type": "Question", "name": "¿Puedo cambiar o cancelar mi solicitud?", "acceptedAnswer": {"@type": "Answer", "text": "Sí. Llámenos al +504 2443-0236 o escríbanos por WhatsApp al +504 3347-0516 y con gusto le ayudamos. Como no se cobra por adelantado, modificar su solicitud es sencillo."}}
+    ]
   }
   </script>
 </head>
@@ -66,8 +93,10 @@
       </button>
       <ul class="nav-links" id="navLinks">
         <li><a href="/#hotel">El Hotel</a></li>
+        <li><a href="/#habitaciones">Habitaciones</a></li>
         <li><a href="/#servicios">Servicios</a></li>
         <li><a href="/#ubicacion">Ubicación</a></li>
+        <li><a href="/#preguntas">Preguntas</a></li>
         <li><a class="btn btn-gold" href="/reservar">Reservar</a></li>
       </ul>
     </div>
@@ -112,6 +141,50 @@
             </dl>
           </aside>
         </div>
+      </div>
+    </section>
+
+    <!-- Habitaciones -->
+    <section class="section" id="habitaciones">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="label">Habitaciones</span>
+          <h2>Habitaciones con nombre de destino</h2>
+          <p class="lead">Nuestras 29 habitaciones llevan los nombres de los lugares que hacen único a Honduras: de las ruinas mayas de Copán a los arrecifes de Roatán. Descanse en el corazón de La Ceiba y sueñe con el país entero.</p>
+        </div>
+        <div class="rooms-grid">
+          <article class="room-card">
+            <span class="room-index" aria-hidden="true">01</span>
+            <h3>Copán</h3>
+            <p>Cuna de la civilización maya y patrimonio de la humanidad: estelas talladas y la famosa Escalinata de los Jeroglíficos.</p>
+          </article>
+          <article class="room-card">
+            <span class="room-index" aria-hidden="true">02</span>
+            <h3>Roatán</h3>
+            <p>La mayor de las Islas de la Bahía: arrecifes de coral, aguas turquesa y buceo de clase mundial en el Caribe hondureño.</p>
+          </article>
+          <article class="room-card">
+            <span class="room-index" aria-hidden="true">03</span>
+            <h3>Tela</h3>
+            <p>Bahía de ensueño en el Caribe, puerta de entrada al jardín botánico Lancetilla y a playas de arena dorada.</p>
+          </article>
+          <article class="room-card">
+            <span class="room-index" aria-hidden="true">04</span>
+            <h3>Utila</h3>
+            <p>Isla pequeña y legendario paraíso del buceo: tiburones ballena, cuevas submarinas y atardeceres frente al mar.</p>
+          </article>
+          <article class="room-card">
+            <span class="room-index" aria-hidden="true">05</span>
+            <h3>La Mosquitia</h3>
+            <p>Selva, ríos y cultura miskita: la región más verde de Honduras, hogar de la reserva de Río Plátano.</p>
+          </article>
+          <article class="room-card room-cta">
+            <h3>Reserve su destino</h3>
+            <p>Sin pagos por adelantado: complete su solicitud en línea y le confirmamos la disponibilidad por teléfono o WhatsApp.</p>
+            <a class="btn btn-gold" href="/reservar">Reservar su estadía</a>
+          </article>
+        </div>
+        <p class="rooms-note">¿Quiere ver una habitación en particular? <a href="https://wa.me/50433470516" target="_blank" rel="noopener noreferrer">Escríbanos por WhatsApp</a> y con gusto le enviamos fotos.</p>
       </div>
     </section>
 
@@ -208,6 +281,42 @@
       </div>
     </section>
 
+    <!-- Preguntas frecuentes -->
+    <section class="section section-alt" id="preguntas">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="label">Preguntas frecuentes</span>
+          <h2>Resolvemos sus dudas</h2>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item" open>
+            <summary>¿Cómo hago una reserva?</summary>
+            <div class="faq-answer"><p>Complete el formulario en nuestra página de reservas con sus fechas y datos. Recibirá un código de solicitud (HP-XXXXXX) y el hotel le confirmará la disponibilidad por teléfono o WhatsApp. No se cobra nada por adelantado.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>¿Cuándo y cómo pago?</summary>
+            <div class="faq-answer"><p>El pago se realiza al llegar al hotel. Aceptamos efectivo, tarjeta y transferencia.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>¿La recepción está abierta de noche?</summary>
+            <div class="faq-answer"><p>Sí. Nuestra recepción atiende las 24 horas, todos los días. Si llega de madrugada o sale temprano, siempre habrá alguien para atenderle.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>¿Ofrecen desayuno?</summary>
+            <div class="faq-answer"><p>Sí, cada mañana preparamos un desayuno típico hondureño para que empiece el día con sabor local.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>¿Dónde están ubicados?</summary>
+            <div class="faq-answer"><p>En el corazón de La Ceiba: Barrio El Centro, entre la Avenida San Isidro y la Avenida 14 de Julio, 7 Calle. En la sección Ubicación encuentra el mapa y el enlace para abrirlo en Google Maps.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>¿Puedo cambiar o cancelar mi solicitud?</summary>
+            <div class="faq-answer"><p>Sí. Llámenos al +504 2443-0236 o escríbanos por WhatsApp al +504 3347-0516 y con gusto le ayudamos. Como no se cobra por adelantado, modificar su solicitud es sencillo.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
     <!-- CTA reservas -->
     <section class="cta-band">
       <h2>Reserve su estadía con anticipación</h2>
@@ -234,8 +343,10 @@
           <h4>Navegación</h4>
           <ul>
             <li><a href="/#hotel">El Hotel</a></li>
+            <li><a href="/#habitaciones">Habitaciones</a></li>
             <li><a href="/#servicios">Servicios</a></li>
             <li><a href="/#ubicacion">Ubicación</a></li>
+            <li><a href="/#preguntas">Preguntas</a></li>
             <li><a href="/reservar">Reservar</a></li>
           </ul>
         </div>
