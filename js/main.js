@@ -39,7 +39,7 @@
 
   /* ---------- Revelado sutil al hacer scroll ---------- */
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var revealSel = ".section-head, .hotel-copy, .facts-card, .room-card, .service-card, .booking-step, .steps-actions, .contact-list, .location-actions, .map-col, .facade-figure, .faq-list, .cta-band > h2, .cta-band > p, .cta-band > .hero-actions, .page-head, .form-card, .aside-card";
+  var revealSel = ".section-head, .hotel-copy, .facts-card, .rooms-grid, .service-card, .booking-step, .steps-actions, .contact-list, .location-actions, .map-col, .facade-figure, .faq-list, .cta-band > h2, .cta-band > p, .cta-band > .hero-actions, .page-head, .form-card, .aside-card";
   // Evita revelados anidados (p. ej. section-head dentro de hotel-copy):
   // filtrar ANTES de añadir la clase, para que ningún elemento quede oculto sin observador.
   var revealEls = Array.prototype.slice.call(document.querySelectorAll(revealSel)).filter(function (el) {

@@ -684,18 +684,93 @@ html.js .reveal.revealed { opacity: 1; transform: none; }
 @keyframes faqIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 .faq-answer p { color: var(--ink-soft); font-size: 0.95rem; max-width: 68ch; }
 
+/* --------------------------------------------------------------------------
+   Viewports: >960 escritorio · <=960 tablet/mobile condensado · <=760 menú
+   móvil y formulario a una columna · <=400 móvil pequeño
+   -------------------------------------------------------------------------- */
+
 @media (max-width: 960px) {
-  .rooms-grid { grid-template-columns: repeat(2, 1fr); }
+  .hotel-grid, .location-grid, .reserve-layout { grid-template-columns: 1fr; gap: 2rem; }
   .nav-links { gap: 0.85rem; }
   .nav-links a:not(.btn) { font-size: 0.7rem; letter-spacing: 0.1em; }
-  .hotel-grid, .location-grid, .reserve-layout { grid-template-columns: 1fr; gap: 2.2rem; }
-  .service-card.span-7, .service-card.span-5 { grid-column: span 12; }
-  .service-card.span-4 { grid-column: span 6; }
-  .map-frame { min-height: 320px; }
-  .facade-figure { margin-top: 2.2rem; }
-  .booking-steps { grid-template-columns: 1fr; gap: 1.8rem; }
-  .booking-step { padding: 0; }
-  .booking-step + .booking-step { border-left: none; padding-left: 0; border-top: 1px solid rgba(201, 177, 131, 0.28); padding-top: 1.8rem; }
+
+  /* Ritmo vertical condensado */
+  .section { padding: 2.6rem 0; }
+  .booking-band { padding: 2.8rem 0; }
+  .section-head { margin-bottom: 1.6rem; }
+  .section-head h2 { font-size: 1.5rem; }
+  .section-head .lead, .lead { font-size: 0.98rem; }
+
+  /* Hero compacto */
+  .hero { padding: 2.4rem 1.2rem 2.2rem; }
+  .hero-logo { width: min(220px, 60vw); }
+  .hero-tagline { font-size: 1.4rem; }
+  .hero-sub { margin: 0.9rem auto 1.6rem; font-size: 0.95rem; }
+  .hero-note { display: none; }
+
+  /* Habitaciones: carrusel horizontal con snap */
+  .rooms-grid {
+    display: grid; grid-template-columns: none;
+    grid-auto-flow: column; grid-auto-columns: min(82%, 360px);
+    gap: 0.9rem; overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.7rem;
+    scrollbar-width: thin; scrollbar-color: var(--gold-soft) transparent;
+  }
+  .rooms-grid::-webkit-scrollbar { height: 4px; }
+  .rooms-grid::-webkit-scrollbar-thumb { background: var(--gold-soft); border-radius: 2px; }
+  .rooms-grid::-webkit-scrollbar-track { background: transparent; }
+  .room-card { scroll-snap-align: start; padding: 1.4rem; }
+  .room-card h3 { font-size: 1.25rem; }
+  .room-card p { font-size: 0.9rem; }
+  .rooms-note { margin-top: 1rem; font-size: 0.85rem; }
+
+  /* Servicios: destacado a lo ancho + resto en 2x2 */
+  .services-grid { gap: 0.9rem; }
+  .service-card { padding: 1.2rem; }
+  .service-card.span-7 { grid-column: span 12; }
+  .service-card.span-5, .service-card.span-4 { grid-column: span 6; }
+  .service-icon { width: 30px; height: 30px; margin-bottom: 0.7rem; }
+  .service-card h3 { font-size: 1.02rem; }
+  .service-card p { font-size: 0.85rem; }
+
+  /* Pasos de reserva: numeral compacto junto al texto */
+  .booking-band .section-head .lead { display: none; }
+  .booking-steps { grid-template-columns: 1fr; gap: 1.1rem; margin-bottom: 1.8rem; }
+  .booking-step { display: grid; grid-template-columns: auto 1fr; gap: 0 0.9rem; padding: 0; }
+  .booking-step + .booking-step { border-left: none; padding-left: 0; border-top: 1px solid rgba(201, 177, 131, 0.28); padding-top: 1.1rem; }
+  .step-num { grid-row: span 2; font-size: 1.6rem; margin-bottom: 0; align-self: start; }
+  .booking-step h3 { font-size: 1.08rem; margin-bottom: 0.25rem; }
+  .booking-step p { font-size: 0.88rem; }
+
+  /* Datos y ubicación */
+  .hotel-copy p { font-size: 0.95rem; }
+  .hotel-copy p + p { margin-top: 0.8rem; }
+  .facts-card { padding: 1.4rem; }
+  .fact-row { padding: 0.5rem 0; }
+  .fact-row dd { font-size: 0.95rem; }
+  .contact-list { margin: 1.2rem 0 1.4rem; }
+  .contact-list li { padding: 0.6rem 0; }
+  .map-frame { min-height: 240px; }
+  .facade-figure { margin-top: 1.6rem; }
+  .facade-figure img { max-height: 220px; }
+
+  /* FAQ y CTA */
+  .faq-item summary { padding: 0.8rem 0; font-size: 1rem; }
+  .faq-answer { padding-bottom: 1rem; }
+  .faq-answer p { font-size: 0.9rem; }
+  .cta-band { padding: 2.6rem 1.2rem; }
+  .cta-band h2 { font-size: 1.5rem; }
+  .cta-band p { font-size: 0.95rem; }
+
+  /* Footer: marca arriba, navegación y contacto en dos columnas */
+  .footer { padding: 2.2rem 0 1.6rem; }
+  .footer-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 1.4rem; }
+  .footer-grid > :first-child { grid-column: 1 / -1; }
+  .footer-col li { margin-bottom: 0.3rem; }
+  .footer-col a { font-size: 0.85rem; }
+  .footer-logo img { height: 48px; }
+  .footer-bottom { margin-top: 1.6rem; padding-top: 1.2rem; }
 }
 
 @media (max-width: 760px) {
@@ -709,16 +784,17 @@ html.js .reveal.revealed { opacity: 1; transform: none; }
   .nav-links.active { opacity: 1; pointer-events: auto; }
   .nav-links a:not(.btn) { font-size: 1rem; }
   .nav-logo img { height: 44px; }
-
-  .hero { padding: 3rem 1.2rem 2.8rem; }
-  .hero-logo { width: min(260px, 72vw); }
-  .section { padding: 3.5rem 0; }
-  .booking-band { padding: 3.5rem 0; }
   .form-card { padding: 1.8rem 1.4rem; }
   .form-row { grid-template-columns: 1fr; gap: 0; }
-  .service-card.span-4 { grid-column: span 12; }
-  .rooms-grid { grid-template-columns: 1fr; }
-  .footer-grid { flex-direction: column; gap: 1.8rem; }
+}
+
+@media (max-width: 400px) {
+  .footer-col a { font-size: 0.78rem; }
+  .hero-logo { width: min(190px, 56vw); }
+  .rooms-grid { grid-auto-columns: 86%; }
+  .service-card { padding: 1rem; }
+  .service-card p { font-size: 0.82rem; }
+  .hero-actions .btn, .cta-band .hero-actions .btn { width: 100%; justify-content: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
