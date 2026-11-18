@@ -7,6 +7,7 @@ posterior despliegue en Docker (Hetzner) detrás de Nginx Proxy Manager.
 Rutas:
   GET  /                        Landing page
   GET  /reservar                Formulario de reserva
+  GET  /preguntas               Preguntas frecuentes
   GET  /admin-reservas          Panel de gestión (requiere ADMIN_KEY)
   GET  /api/csrf                Token CSRF de un solo uso (TTL 10 min)
   POST /api/reservas            Crear solicitud de reserva
@@ -275,6 +276,7 @@ def notificar_telegram(datos, codigo):
 PAGES = {
     "/": "index.html",
     "/reservar": "reservar.html",
+    "/preguntas": "preguntas.html",
     "/admin-reservas": "admin.html",
 }
 STATIC_PREFIXES = ("css/", "js/", "assets/")

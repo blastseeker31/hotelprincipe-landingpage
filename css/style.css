@@ -661,21 +661,17 @@ html.js .reveal.revealed { opacity: 1; transform: none; }
 .rooms-note { margin-top: 1.7rem; text-align: center; font-style: italic; color: var(--ink-soft); font-size: 0.95rem; }
 .rooms-note a { color: var(--gold-dark); text-decoration: underline; text-underline-offset: 3px; }
 
-/* Preguntas frecuentes — editorial: intro sticky + acordeón numerado */
-.faq-grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.35fr); gap: 3.5rem; align-items: start; }
-.faq-intro { position: sticky; top: 100px; }
-.faq-intro .section-head { margin-bottom: 0; }
-.faq-intro .lead { margin-top: 0.9rem; font-size: 1rem; }
-.faq-contact {
-  margin-top: 2rem; padding: 1.5rem 1.6rem;
-  background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--gold);
-  border-radius: var(--radius);
-  display: flex; flex-direction: column; gap: 0.7rem;
+/* Preguntas frecuentes — página dedicada: grupos temáticos + acordeón numerado */
+.faq-wrap { max-width: 860px; padding-bottom: 3.2rem; }
+.faq-group { margin-bottom: 3.4rem; }
+.faq-group-title {
+  font-family: var(--font-label); font-size: 0.8rem; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dark);
+  margin-bottom: 0.6rem;
 }
-.faq-contact p { font-style: italic; color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 0.3rem; }
-.faq-contact .btn { width: 100%; padding: 0.8rem 1rem; }
+.faq-more { max-width: 560px; margin: 3.2rem auto 0; text-align: center; }
 
-.faq-list { --faq-num-w: 2.4rem; --faq-gap: 1rem; margin-top: 11px; }
+.faq-list { --faq-num-w: 2.4rem; --faq-gap: 1rem; }
 .faq-item { border-bottom: 1px solid var(--line); }
 .faq-item:first-child { border-top: 1px solid var(--line); }
 .faq-item summary {
@@ -782,17 +778,14 @@ html.js .reveal.revealed { opacity: 1; transform: none; }
   .facade-figure { margin-top: 1.6rem; }
   .facade-figure img { max-height: 220px; }
 
-  /* FAQ: una columna, intro arriba, acordeón compacto */
-  .faq-grid { grid-template-columns: 1fr; gap: 0; }
-  .faq-intro { position: static; margin-bottom: 1.7rem; }
-  .faq-intro .lead { font-size: 0.98rem; }
-  .faq-contact { margin-top: 1.4rem; padding: 1.2rem; }
-  .faq-contact p { text-align: center; }
-  .faq-contact .btn { padding: 0.75rem 0.9rem; font-size: 0.76rem; letter-spacing: 0.12em; }
+  /* FAQ: acordeón compacto */
+  .faq-group { margin-bottom: 2.6rem; }
+  .faq-more { margin-top: 2.4rem; padding: 1.4rem; }
+  .faq-more .btn { padding: 0.75rem 0.9rem; font-size: 0.76rem; letter-spacing: 0.12em; }
   @media (max-width: 359px) {
-    .faq-contact .btn { font-size: 0.72rem; letter-spacing: 0.1em; padding: 0.75rem 0.6rem; }
+    .faq-more .btn { font-size: 0.72rem; letter-spacing: 0.1em; padding: 0.75rem 0.6rem; }
   }
-  .faq-list { --faq-num-w: 1.9rem; --faq-gap: 0.75rem; margin-top: 0; }
+  .faq-list { --faq-num-w: 1.9rem; --faq-gap: 0.75rem; }
   .faq-num { font-size: 0.85rem; }
   .faq-item summary { padding: 0.8rem 0; font-size: 1rem; }
   .faq-answer { padding-bottom: 1rem; }
