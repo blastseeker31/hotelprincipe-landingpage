@@ -711,7 +711,7 @@ html.js .reveal.revealed { opacity: 1; transform: none; }
   /* Habitaciones: carrusel horizontal con snap */
   .rooms-grid {
     display: grid; grid-template-columns: none;
-    grid-auto-flow: column; grid-auto-columns: min(82%, 360px);
+    grid-auto-flow: column; grid-auto-columns: min(80%, 340px);
     gap: 0.9rem; overflow-x: auto;
     scroll-snap-type: x mandatory;
     padding-bottom: 0.7rem;
@@ -789,27 +789,41 @@ html.js .reveal.revealed { opacity: 1; transform: none; }
   .form-card { padding: 1.8rem 1.4rem; }
   .form-row { grid-template-columns: 1fr; gap: 0; }
 
-  /* Mobile editorial: alineado a la izquierda, botones incluidos */
-  .hero { text-align: left; }
-  .hero-logo { margin: 0 0 0.5rem; }
-  .hero-tagline { margin: 0; }
-  .hero-sub { margin: 0.9rem 0 1.6rem; }
-  .hero .ornament, .cta-band .ornament { margin: 1.2rem 0; }
-  .hero .ornament::before, .cta-band .ornament::before { flex: 0 0 1.6rem; }
-  .hero-actions { justify-content: flex-start; }
-  .cta-band { text-align: left; }
-  .cta-band p { margin: 0 0 1.8rem; }
-  .page-head { text-align: left; }
-  .page-head p { margin: 0.8rem 0 0; }
-  .steps-actions { flex-direction: column; align-items: flex-start; }
+  /* Mobile centrado: cabeceras, copy editorial, pasos y botones al centro.
+     Forms, listas de contacto, FAQ y footer quedan a la izquierda (funcionales). */
+  .section-head { text-align: center; }
+  .section-head .label::after { display: none; }
+  .section-head .lead { margin-left: auto; margin-right: auto; }
+  .hotel-copy, .location-copy { text-align: center; }
+  .facts-card h3 { text-align: center; }
+  .rooms-note { text-align: center; }
+  .service-card { text-align: center; }
+  .service-icon { margin-left: auto; margin-right: auto; }
+  .booking-step { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 0.4rem; padding: 1rem 0; }
+  .step-num { grid-row: auto; margin-bottom: 0.2rem; }
+  .steps-actions { flex-direction: column; align-items: center; }
   .steps-actions .btn { width: min(100%, 340px); }
+  .aside-card h3 { text-align: center; }
+  .aside-card .btn { display: flex; width: 100%; margin-top: 0.6rem; white-space: nowrap; }
+  .submit-row { justify-content: center; }
   .submit-row .btn { width: 100%; }
+  /* ritmo y retícula: hero al eje del wrap, jerarquía h1 > h2 */
+  .hero { padding: 2.4rem 1.5rem 1.8rem; }
+  .hero-tagline { font-size: 1.75rem; }
+  /* filas dato/valor apiladas: legibles, sin columna derecha dentada */
+  .fact-row { flex-direction: column; align-items: flex-start; gap: 0.2rem; }
+  .fact-row dd { text-align: left; font-size: 0.98rem; }
+  /* botones de contacto centrados y gemelos */
+  .location-actions { flex-direction: column; align-items: center; }
+  .location-actions .btn { width: min(100%, 340px); }
+  .contact-list .ci { margin-top: 0; }
+  .reserve-layout { padding-bottom: 2.6rem; }
 }
 
 @media (max-width: 400px) {
   .footer-col a { font-size: 0.78rem; }
   .hero-logo { width: min(190px, 56vw); }
-  .rooms-grid { grid-auto-columns: 86%; }
+  .rooms-grid { grid-auto-columns: 80%; }
   .service-card { padding: 1rem; }
   .service-card p { font-size: 0.82rem; }
   .hero-actions .btn, .cta-band .hero-actions .btn { width: 100%; justify-content: center; }
