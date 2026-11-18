@@ -39,7 +39,7 @@
 
   /* ---------- Revelado sutil al hacer scroll ---------- */
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var revealSel = ".section-head, .hotel-copy, .facts-card, .rooms-grid, .service-card, .booking-step, .steps-actions, .contact-list, .location-actions, .map-col, .facade-figure, .faq-list, .cta-band > h2, .cta-band > p, .cta-band > .hero-actions, .page-head, .form-card, .aside-card";
+  var revealSel = ".faq-intro, .section-head, .hotel-copy, .facts-card, .rooms-grid, .service-card, .booking-step, .steps-actions, .contact-list, .location-actions, .map-col, .facade-figure, .faq-list, .cta-band > h2, .cta-band > p, .cta-band > .hero-actions, .page-head, .form-card, .aside-card";
   // Evita revelados anidados (p. ej. section-head dentro de hotel-copy):
   // filtrar ANTES de añadir la clase, para que ningún elemento quede oculto sin observador.
   var revealEls = Array.prototype.slice.call(document.querySelectorAll(revealSel)).filter(function (el) {
@@ -93,4 +93,15 @@
     }, { rootMargin: "-40% 0px -55% 0px", threshold: 0 });
     spySections.forEach(function (s) { spy.observe(s); });
   }
+
+  /* ---------- FAQ: un solo panel abierto a la vez ---------- */
+  var faqItems = document.querySelectorAll(".faq-item");
+  Array.prototype.forEach.call(faqItems, function (item) {
+    item.addEventListener("toggle", function () {
+      if (!item.open) return;
+      Array.prototype.forEach.call(faqItems, function (other) {
+        if (other !== item && other.open) other.open = false;
+      });
+    });
+  });
 })();

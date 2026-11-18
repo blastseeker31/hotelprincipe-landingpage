@@ -661,25 +661,52 @@ html.js .reveal.revealed { opacity: 1; transform: none; }
 .rooms-note { margin-top: 1.7rem; text-align: center; font-style: italic; color: var(--ink-soft); font-size: 0.95rem; }
 .rooms-note a { color: var(--gold-dark); text-decoration: underline; text-underline-offset: 3px; }
 
-/* Preguntas frecuentes — acordeón nativo */
-.faq-list { max-width: 820px; }
+/* Preguntas frecuentes — editorial: intro sticky + acordeón numerado */
+.faq-grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.35fr); gap: 3.5rem; align-items: start; }
+.faq-intro { position: sticky; top: 100px; }
+.faq-intro .section-head { margin-bottom: 0; }
+.faq-intro .lead { margin-top: 0.9rem; font-size: 1rem; }
+.faq-contact {
+  margin-top: 2rem; padding: 1.5rem 1.6rem;
+  background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--gold);
+  border-radius: var(--radius);
+  display: flex; flex-direction: column; gap: 0.7rem;
+}
+.faq-contact p { font-style: italic; color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 0.3rem; }
+.faq-contact .btn { width: 100%; padding: 0.8rem 1rem; }
+
+.faq-list { --faq-num-w: 2.4rem; --faq-gap: 1rem; margin-top: 11px; }
 .faq-item { border-bottom: 1px solid var(--line); }
+.faq-item:first-child { border-top: 1px solid var(--line); }
 .faq-item summary {
-  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  display: grid; grid-template-columns: var(--faq-num-w) minmax(0, 1fr) auto;
+  align-items: baseline; column-gap: var(--faq-gap);
   padding: 1.15rem 0; cursor: pointer; list-style: none;
   font-family: var(--font-display); font-size: 1.12rem; color: var(--ink);
   transition: color 0.2s ease;
 }
 .faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary::after {
-  content: "+"; font-family: var(--font-label); font-size: 1.5rem; line-height: 1;
-  color: var(--gold-dark); flex-shrink: 0;
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+.faq-num {
+  font-size: 0.95rem; color: var(--ink-soft); letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums; transition: color 0.2s ease;
 }
-.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item summary:hover .faq-num, .faq-item[open] .faq-num { color: var(--gold-dark); }
+.faq-icon { position: relative; width: 15px; height: 15px; align-self: center; }
+.faq-icon::before, .faq-icon::after {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  background: var(--ink-soft); border-radius: 1px;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease;
+}
+.faq-icon::before { width: 15px; height: 1.5px; transform: translate(-50%, -50%); }
+.faq-icon::after { width: 1.5px; height: 15px; transform: translate(-50%, -50%); }
+.faq-item[open] .faq-icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+.faq-item[open] .faq-icon::before, .faq-item[open] .faq-icon::after,
+.faq-item summary:hover .faq-icon::before, .faq-item summary:hover .faq-icon::after { background: var(--gold-dark); }
 .faq-item summary:hover { color: var(--gold-dark); }
+.faq-item[open] summary { color: var(--gold-dark); }
 .faq-item summary:focus-visible { outline: 2px solid var(--gold-dark); outline-offset: 4px; }
-.faq-answer { padding: 0 0 1.3rem; }
+.faq-answer { padding: 0 0 1.15rem calc(var(--faq-num-w) + var(--faq-gap)); }
+.faq-q { text-wrap: balance; }
 .faq-item[open] .faq-answer { animation: faqIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
 @keyframes faqIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 .faq-answer p { color: var(--ink-soft); font-size: 0.95rem; max-width: 68ch; }
@@ -755,7 +782,18 @@ html.js .reveal.revealed { opacity: 1; transform: none; }
   .facade-figure { margin-top: 1.6rem; }
   .facade-figure img { max-height: 220px; }
 
-  /* FAQ y CTA */
+  /* FAQ: una columna, intro arriba, acordeón compacto */
+  .faq-grid { grid-template-columns: 1fr; gap: 0; }
+  .faq-intro { position: static; margin-bottom: 1.7rem; }
+  .faq-intro .lead { font-size: 0.98rem; }
+  .faq-contact { margin-top: 1.4rem; padding: 1.2rem; }
+  .faq-contact p { text-align: center; }
+  .faq-contact .btn { padding: 0.75rem 0.9rem; font-size: 0.76rem; letter-spacing: 0.12em; }
+  @media (max-width: 359px) {
+    .faq-contact .btn { font-size: 0.72rem; letter-spacing: 0.1em; padding: 0.75rem 0.6rem; }
+  }
+  .faq-list { --faq-num-w: 1.9rem; --faq-gap: 0.75rem; margin-top: 0; }
+  .faq-num { font-size: 0.85rem; }
   .faq-item summary { padding: 0.8rem 0; font-size: 1rem; }
   .faq-answer { padding-bottom: 1rem; }
   .faq-answer p { font-size: 0.9rem; }
