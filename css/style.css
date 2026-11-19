@@ -735,6 +735,32 @@ html.js .reveal.revealed { opacity: 1; transform: none; }
 .rooms-note { margin-top: 1.7rem; text-align: center; font-style: italic; color: var(--ink-soft); font-size: 0.95rem; }
 .rooms-note a { color: var(--gold-dark); text-decoration: underline; text-underline-offset: 3px; }
 
+/* Habitaciones con fotografía del destino (imágenes de los lugares, no de las habitaciones) */
+.room-card.room-photo {
+  position: relative; overflow: hidden; justify-content: flex-end;
+  min-height: 300px; border-color: transparent;
+  background-color: var(--ink); background-size: cover; background-position: center;
+  background-clip: padding-box;
+}
+.room-card.room-photo::before {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  background: linear-gradient(180deg, rgba(23, 20, 14, 0.10) 0%, rgba(23, 20, 14, 0.55) 22%, rgba(23, 20, 14, 0.88) 52%, rgba(23, 20, 14, 0.93) 100%);
+}
+.room-card.room-photo > * { position: relative; z-index: 1; }
+.room-card.room-photo .room-index { color: #DCC79B; }
+.room-card.room-photo:hover .room-index { color: #EFE0BC; }
+.room-card.room-photo h3 { color: #F7F4EF; }
+.room-card.room-photo p { color: rgba(247, 244, 239, 0.92); }
+.room-card.room-photo:hover { border-color: var(--gold-soft); box-shadow: 0 10px 30px rgba(35, 32, 25, 0.18); }
+.room-card.dest-ceiba, .bk-room.dest-ceiba { background-image: url('../assets/images/destinos/la-ceiba.jpg'); }
+.room-card.dest-roatan, .bk-room.dest-roatan { background-image: url('../assets/images/destinos/roatan.jpg'); }
+.room-card.dest-guanaja, .bk-room.dest-guanaja { background-image: url('../assets/images/destinos/guanaja.jpg'); }
+.room-card.dest-copan, .bk-room.dest-copan { background-image: url('../assets/images/destinos/copan.jpg'); }
+.room-card.dest-cayos, .bk-room.dest-cayos { background-image: url('../assets/images/destinos/cayos-cochinos.jpg'); }
+.room-card.dest-trujillo, .bk-room.dest-trujillo { background-image: url('../assets/images/destinos/trujillo.jpg'); }
+.rooms-credits { margin-top: 0.9rem; text-align: center; font-size: 0.72rem; line-height: 1.7; color: var(--ink-soft); }
+.rooms-credits a { color: var(--gold-dark); text-decoration: underline; text-underline-offset: 2px; }
+
 /* CTA de habitaciones: banda ancha bajo las 6 tarjetas (solo desktop; en mobile sigue en el carrusel) */
 @media (min-width: 961px) {
   .room-cta { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: space-between; gap: 2rem; padding: 1.6rem 2rem; }
@@ -832,6 +858,7 @@ html.js .reveal.revealed { opacity: 1; transform: none; }
   .rooms-grid::-webkit-scrollbar-thumb { background: var(--gold-soft); border-radius: 2px; }
   .rooms-grid::-webkit-scrollbar-track { background: transparent; }
   .room-card { scroll-snap-align: start; padding: 1.4rem; }
+  .room-card.room-photo { min-height: 280px; }
   .room-card h3 { font-size: 1.25rem; }
   .room-card p { font-size: 0.9rem; }
   .rooms-note { margin-top: 1rem; font-size: 0.85rem; }

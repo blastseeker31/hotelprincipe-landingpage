@@ -170,7 +170,7 @@
   opacity: 0; transition: opacity 0.2s ease;
 }
 .bk-room .bk-room-check svg { position: absolute; top: 5px; right: -32px; width: 13px; height: 13px; color: #FBF9F4; }
-.bk-room[aria-checked="true"] { border-color: var(--gold-dark); border-width: 1.5px; background: #FBF7EE; box-shadow: 0 8px 24px rgba(126, 99, 48, 0.16); }
+.bk-room[aria-checked="true"] { border-color: var(--gold-dark); border-width: 1.5px; background-color: #FBF7EE; box-shadow: 0 8px 24px rgba(126, 99, 48, 0.16); }
 .bk-room[aria-checked="true"] .bk-room-check { opacity: 1; }
 .bk-room[aria-checked="true"] .bk-room-icon { color: var(--gold-dark); }
 .bk-room[aria-checked="true"]::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--gold-dark); }
@@ -178,6 +178,30 @@
 .bk-room.bk-room-any h3 { font-size: 1.15rem; margin: 0; }
 .bk-room.bk-room-any p { margin: 0.15rem 0 0; }
 .bk-room-note { margin-top: 1.2rem; font-size: 0.8rem; color: var(--ink-soft); font-style: italic; }
+
+/* Habitaciones con fotografía del destino (imágenes de los lugares, no de las habitaciones) */
+.bk-room.bk-room-photo {
+  display: flex; flex-direction: column; justify-content: flex-end;
+  min-height: 195px; border-color: transparent;
+  background-color: var(--ink); background-size: cover; background-position: center;
+  background-clip: padding-box;
+}
+.bk-room.bk-room-photo::after {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(23, 20, 14, 0.10) 0%, rgba(23, 20, 14, 0.55) 22%, rgba(23, 20, 14, 0.88) 55%, rgba(23, 20, 14, 0.93) 100%);
+}
+.bk-room.bk-room-photo .bk-room-idx, .bk-room.bk-room-photo h3, .bk-room.bk-room-photo p { position: relative; z-index: 1; }
+.bk-room.bk-room-photo .bk-room-idx { color: #DCC79B; }
+.bk-room.bk-room-photo h3 { color: #F7F4EF; }
+.bk-room.bk-room-photo p { color: rgba(247, 244, 239, 0.92); }
+.bk-room.bk-room-photo .bk-room-icon { z-index: 2; color: #DCC79B; opacity: 0.9; }
+.bk-room.bk-room-photo .bk-room-check { z-index: 2; }
+.bk-room.bk-room-photo:hover { border-color: var(--gold-soft); }
+.bk-room.bk-room-photo[aria-checked="true"] { border-color: var(--gold-dark); box-shadow: 0 8px 24px rgba(126, 99, 48, 0.30); }
+.bk-room.bk-room-photo[aria-checked="true"]::before { z-index: 2; }
+.bk-room.bk-room-photo[aria-checked="true"] .bk-room-icon { color: #EFE0BC; }
+.bk-room-credits { margin-top: 0.7rem; font-size: 0.68rem; line-height: 1.7; color: var(--ink-soft); }
+.bk-room-credits a { color: var(--gold-dark); text-decoration: underline; text-underline-offset: 2px; }
 
 /* ---------- Campos ---------- */
 .bk-field { margin-bottom: 1.4rem; }
