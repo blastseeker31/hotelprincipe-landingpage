@@ -30,6 +30,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Josefin+Sans:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css?v=20261118m">
+  <link rel="stylesheet" href="/css/reservar.css?v=20261118p">
 </head>
 <body>
   <a class="skip-link" href="#contenido">Ir al contenido</a>
@@ -44,159 +45,304 @@
       </button>
       <ul class="nav-links" id="navLinks">
         <li><a href="/#hotel">El Hotel</a></li>
+        <li><a href="/#habitaciones">Habitaciones</a></li>
+        <li><a href="/#plaza">Plaza</a></li>
         <li><a href="/#servicios">Servicios</a></li>
         <li><a href="/#ubicacion">Ubicación</a></li>
+        <li><a href="/preguntas">Preguntas</a></li>
         <li><a class="btn btn-gold" href="/reservar" aria-current="page">Reservar</a></li>
       </ul>
     </div>
   </header>
 
   <main id="contenido">
-    <div class="page-head">
-      <span class="label">Reservas</span>
-      <h1>Solicite su estadía</h1>
-      <p>Complete el formulario y el hotel le contactará para confirmar disponibilidad. Su reserva se asegura con un depósito del 50% del total de la estadía.</p>
+    <div class="bk-head">
+      <span class="label">Reservas · La Ceiba, Honduras</span>
+      <h1>Su estadía, a la medida</h1>
+      <p class="bk-lede">Díganos cuándo llega y qué necesita; nosotros nos encargamos del resto. Le confirmamos por WhatsApp o teléfono, sin intermediarios.</p>
+      <span class="bk-deposit">Depósito del 50% para confirmar · sin pago en línea</span>
     </div>
 
-    <div class="wrap reserve-layout">
-      <div class="form-card">
-        <noscript>
-          <div class="form-alert visible">Este formulario requiere JavaScript. Para reservar, llámenos al +504 2443-0516 o escríbanos por WhatsApp al +504 9451-9992.</div>
-        </noscript>
+    <div class="wrap">
+      <div class="bk-layout">
+        <div class="bk-flow" id="bkFlow">
+          <noscript>
+            <div class="bk-alert visible">Para enviar su solicitud en línea active JavaScript, o contáctenos directamente: <a href="tel:+50424430516">+504 2443-0516</a> · <a href="https://wa.me/50494519992" target="_blank" rel="noopener noreferrer">WhatsApp</a>.</div>
+          </noscript>
+          <div class="bk-alert" id="bkAlert" role="alert" aria-live="assertive"></div>
 
-        <form id="reservaForm" novalidate>
-          <div class="form-alert" id="formAlert" role="alert"></div>
-
-          <!-- Honeypot: invisible para personas, los bots lo llenan -->
-          <div class="hp-field" aria-hidden="true">
-            <label for="website">Sitio web</label>
-            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
-          </div>
-          <input type="hidden" name="_load_time" id="_load_time" value="">
-          <input type="hidden" name="csrf_token" id="csrf_token" value="">
-
-          <div class="form-group">
-            <label for="nombre">Nombre completo <span class="req">*</span></label>
-            <input type="text" id="nombre" name="nombre" maxlength="100" autocomplete="name" placeholder="Como aparece en su documento" required>
-            <p class="field-error" id="err-nombre"></p>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="telefono">Teléfono <span class="req">*</span></label>
-              <div class="phone-wrap">
-                <span class="phone-prefix">+504</span>
-                <input type="text" id="telefono" name="telefono" inputmode="numeric" maxlength="9" placeholder="0000-0000" autocomplete="tel-national" required>
-              </div>
-              <p class="field-error" id="err-telefono"></p>
-            </div>
-            <div class="form-group">
-              <label for="email">Correo electrónico</label>
-              <input type="email" id="email" name="email" maxlength="100" autocomplete="email" placeholder="correo@ejemplo.com">
-              <p class="field-error" id="err-email"></p>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="fecha_llegada">Fecha de llegada <span class="req">*</span></label>
-              <input type="date" id="fecha_llegada" name="fecha_llegada" required>
-              <p class="field-error" id="err-fecha_llegada"></p>
-            </div>
-            <div class="form-group">
-              <label for="fecha_salida">Fecha de salida <span class="req">*</span></label>
-              <input type="date" id="fecha_salida" name="fecha_salida" required>
-              <p class="field-error" id="err-fecha_salida"></p>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="habitaciones">Habitaciones <span class="req">*</span></label>
-              <select id="habitaciones" name="habitaciones">
-                <option value="1" selected>1 habitación</option>
-                <option value="2">2 habitaciones</option>
-                <option value="3">3 habitaciones</option>
-                <option value="4">4 habitaciones</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="huespedes">Huéspedes <span class="req">*</span></label>
-              <select id="huespedes" name="huespedes">
-                <option value="1">1 huésped</option>
-                <option value="2" selected>2 huéspedes</option>
-                <option value="3">3 huéspedes</option>
-                <option value="4">4 huéspedes</option>
-                <option value="5">5 huéspedes</option>
-                <option value="6">6 huéspedes</option>
-                <option value="7">7 huéspedes</option>
-                <option value="8">8 huéspedes</option>
-                <option value="9">9 huéspedes</option>
-                <option value="10">10 huéspedes</option>
-                <option value="11">11 huéspedes</option>
-                <option value="12">12 huéspedes</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="stay-summary" id="staySummary" aria-live="polite"></div>
-
-          <div class="form-group">
-            <label for="mensaje">Mensaje</label>
-            <textarea id="mensaje" name="mensaje" maxlength="500" rows="3" placeholder="Hora aproximada de llegada, necesidades especiales, preguntas…"></textarea>
-            <p class="hint"><span id="msgCount">0</span>/500 caracteres</p>
-          </div>
-
-          <div class="submit-row">
-            <button type="submit" class="btn btn-gold" id="submitBtn">
-              <span id="submitText">Enviar solicitud</span>
-            </button>
-            <span class="submit-note">Le confirmaremos por teléfono o WhatsApp.</span>
-          </div>
-        </form>
-
-        <!-- Confirmación -->
-        <div class="success-panel" id="successPanel" role="status">
-          <div class="success-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>
-          </div>
-          <span class="label">Solicitud recibida</span>
-          <p class="success-code" id="successCode">HP-XXXXXX</p>
-          <p class="code-hint">Guarde este código. El hotel le contactará para confirmar disponibilidad y el depósito del 50% que asegura su reserva.</p>
-          <div class="success-details">
-            <dl>
-              <div class="fact-row"><dt>A nombre de</dt><dd id="okNombre">—</dd></div>
-              <div class="fact-row"><dt>Llegada</dt><dd id="okLlegada">—</dd></div>
-              <div class="fact-row"><dt>Salida</dt><dd id="okSalida">—</dd></div>
-              <div class="fact-row"><dt>Estadía</dt><dd id="okNoches">—</dd></div>
-              <div class="fact-row"><dt>Habitaciones</dt><dd id="okHabitaciones">—</dd></div>
-              <div class="fact-row"><dt>Huéspedes</dt><dd id="okHuespedes">—</dd></div>
-            </dl>
-          </div>
-          <div class="success-actions">
-            <a class="btn btn-green" id="successWa" href="#" target="_blank" rel="noopener noreferrer">Confirmar por WhatsApp</a>
-            <button class="btn btn-outline" id="nuevaBtn" type="button">Nueva solicitud</button>
-          </div>
-        </div>
-      </div>
-
-      <aside>
-        <div class="aside-card">
-          <h3>Cómo funciona</h3>
-          <ol class="steps">
-            <li><strong>Solicitud</strong><span>Complete el formulario con sus fechas y datos de contacto. Recibirá un código de reserva.</span></li>
-            <li><strong>Confirmación</strong><span>El hotel revisa disponibilidad y le contacta por teléfono o WhatsApp con el detalle y el monto total de su estadía.</span></li>
-            <li><strong>Depósito</strong><span>Para confirmar la reserva se abona el 50% del total, en efectivo, tarjeta o transferencia.</span></li>
-            <li><strong>Estadía</strong><span>Pague el saldo restante al llegar y presente su código en recepción.</span></li>
+          <ol class="bk-progress" id="bkProgress" aria-label="Progreso de la solicitud">
+            <li class="active"><button type="button" class="bk-pbtn" aria-current="step"><span class="bk-pnum">01</span><span class="bk-plabel">Fechas</span></button></li>
+            <li><button type="button" class="bk-pbtn" disabled><span class="bk-pnum">02</span><span class="bk-plabel">Habitación</span></button></li>
+            <li><button type="button" class="bk-pbtn" disabled><span class="bk-pnum">03</span><span class="bk-plabel">Detalles</span></button></li>
+            <li><button type="button" class="bk-pbtn" disabled><span class="bk-pnum">04</span><span class="bk-plabel">Listo</span></button></li>
           </ol>
+
+          <form id="reservaForm" novalidate>
+            <div class="hp-field" aria-hidden="true">
+              <label for="website">No llenar este campo</label>
+              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+            <input type="hidden" id="_load_time" name="_load_time" value="">
+            <input type="hidden" id="csrf_token" name="csrf_token" value="">
+            <input type="hidden" id="fecha_llegada" name="fecha_llegada" value="">
+            <input type="hidden" id="fecha_salida" name="fecha_salida" value="">
+            <input type="hidden" id="habitaciones" name="habitaciones" value="1">
+            <input type="hidden" id="huespedes" name="huespedes" value="1">
+
+            <section class="bk-step active" data-step="1" aria-labelledby="bkH1">
+              <div class="bk-step-head">
+                <span class="bk-step-kicker">Paso 01 · Fechas</span>
+                <h2 id="bkH1">¿Cuándo nos visita?</h2>
+                <p>Toque su día de llegada y luego el de salida. Le mostramos las noches al instante.</p>
+              </div>
+              <div class="bk-cal">
+                <div class="bk-cal-top">
+                  <button type="button" class="bk-cal-nav" id="bkCalPrev" aria-label="Mes anterior">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+                  </button>
+                  <span class="bk-cal-title" id="bkCalTitle" aria-live="polite"></span>
+                  <button type="button" class="bk-cal-nav" id="bkCalNext" aria-label="Mes siguiente">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                  </button>
+                </div>
+                <div class="bk-cal-grid" id="bkCalGrid" role="grid" aria-label="Calendario de disponibilidad"></div>
+              </div>
+              <div class="bk-dates">
+                <div class="bk-date-box" id="bkBoxLlegada">
+                  <span class="bk-date-label">Llegada</span>
+                  <span class="bk-date-val" id="bkValLlegada">Por elegir</span>
+                </div>
+                <div class="bk-date-box" id="bkBoxSalida">
+                  <span class="bk-date-label">Salida</span>
+                  <span class="bk-date-val" id="bkValSalida">Por elegir</span>
+                </div>
+                <span class="bk-nights" id="bkNights" aria-live="polite"></span>
+              </div>
+              <p class="bk-cal-hint" id="bkCalHint" aria-live="polite"></p>
+              <div class="bk-counters">
+                <div>
+                  <span class="bk-counter-label" id="bkHabLabel">Habitaciones</span>
+                  <div class="bk-stepper" data-counter="habitaciones" role="group" aria-labelledby="bkHabLabel">
+                    <button type="button" data-dir="-1" aria-label="Menos habitaciones">−</button>
+                    <span class="bk-step-val" aria-live="polite">1</span>
+                    <button type="button" data-dir="1" aria-label="Más habitaciones">+</button>
+                  </div>
+                </div>
+                <div>
+                  <span class="bk-counter-label" id="bkHueLabel">Huéspedes</span>
+                  <div class="bk-stepper" data-counter="huespedes" role="group" aria-labelledby="bkHueLabel">
+                    <button type="button" data-dir="-1" aria-label="Menos huéspedes">−</button>
+                    <span class="bk-step-val" aria-live="polite">1</span>
+                    <button type="button" data-dir="1" aria-label="Más huéspedes">+</button>
+                  </div>
+                </div>
+              </div>
+              <p class="bk-times">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+                Check-in desde las 3:00 p.m. · Check-out hasta las 11:00 a.m. · Recepción 24 horas
+              </p>
+              <div class="bk-actions">
+                <span></span>
+                <button type="button" class="btn btn-gold" data-next>Continuar</button>
+              </div>
+            </section>
+
+            <section class="bk-step" data-step="2" aria-labelledby="bkH2">
+              <div class="bk-step-head">
+                <span class="bk-step-kicker">Paso 02 · Habitación</span>
+                <h2 id="bkH2">Elija su favorita</h2>
+                <p>Cada habitación lleva el nombre de un destino de Honduras. Elija la que más le llame; se la asignamos según disponibilidad.</p>
+              </div>
+              <div class="bk-rooms" role="radiogroup" aria-label="Preferencia de habitación">
+                <button type="button" class="bk-room" role="radio" aria-checked="false" data-room="Copán">
+                  <span class="bk-room-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+                  <svg class="bk-room-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l8 16H4L12 4z"/><path d="M8.5 13h7M6.5 17h11"/></svg>
+                  <span class="bk-room-idx">01</span>
+                  <h3>Copán</h3>
+                  <p>Inspirada en la tierra maya de las estelas y los jeroglíficos.</p>
+                </button>
+                <button type="button" class="bk-room" role="radio" aria-checked="false" data-room="Roatán">
+                  <span class="bk-room-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+                  <svg class="bk-room-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 15c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>
+                  <span class="bk-room-idx">02</span>
+                  <h3>Roatán</h3>
+                  <p>El arrecife y el buceo de la isla más grande de las Bahías.</p>
+                </button>
+                <button type="button" class="bk-room" role="radio" aria-checked="false" data-room="Tela">
+                  <span class="bk-room-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+                  <svg class="bk-room-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4C10 4 4 10 4 18c0 1 0 2 1 2 8 0 14-6 15-16z"/><path d="M5 19C9 13 13 9 18 6"/></svg>
+                  <span class="bk-room-idx">03</span>
+                  <h3>Tela</h3>
+                  <p>La bahía y el jardín botánico de Lancetilla, pulmón verde del Caribe.</p>
+                </button>
+                <button type="button" class="bk-room" role="radio" aria-checked="false" data-room="Utila">
+                  <span class="bk-room-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+                  <svg class="bk-room-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12c2-3 5-5 9-5 2 0 4 1 5 5-1 4-3 5-5 5-4 0-7-2-9-5z"/><path d="M6 12L3 9v6l3-3z"/><circle cx="16" cy="11" r="1"/></svg>
+                  <span class="bk-room-idx">04</span>
+                  <h3>Utila</h3>
+                  <p>Encuentros con el tiburón ballena y la vida marina del Caribe.</p>
+                </button>
+                <button type="button" class="bk-room" role="radio" aria-checked="false" data-room="La Mosquitia">
+                  <span class="bk-room-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+                  <svg class="bk-room-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L8 8h2l-3 5h2l-3 5h12l-3-5h2l-3-5h2L12 2z"/><path d="M12 18v4"/></svg>
+                  <span class="bk-room-idx">05</span>
+                  <h3>La Mosquitia</h3>
+                  <p>La selva y los ríos de la reserva del Río Plátano, patrimonio natural.</p>
+                </button>
+                <button type="button" class="bk-room bk-room-any" role="radio" aria-checked="true" data-room="">
+                  <span class="bk-room-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+                  <svg class="bk-room-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5 5-2z"/></svg>
+                  <span>
+                    <h3>Sin preferencia</h3>
+                    <p>Sorpréndanos: asignamos la mejor habitación disponible para su estadía.</p>
+                  </span>
+                </button>
+              </div>
+              <p class="bk-room-note">La preferencia nos guía, pero la asignación final depende de la disponibilidad al confirmar.</p>
+              <div class="bk-actions">
+                <button type="button" class="bk-back" data-prev>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+                  Atrás
+                </button>
+                <button type="button" class="btn btn-gold" data-next>Continuar</button>
+              </div>
+            </section>
+
+            <section class="bk-step" data-step="3" aria-labelledby="bkH3">
+              <div class="bk-step-head">
+                <span class="bk-step-kicker">Paso 03 · Detalles</span>
+                <h2 id="bkH3">Para atenderle mejor</h2>
+                <p>Con estos datos le contactamos para confirmar. Los campos marcados con <span style="color:var(--gold-dark)">*</span> son obligatorios.</p>
+              </div>
+              <div class="bk-field">
+                <label for="nombre">Nombre completo <span class="req">*</span></label>
+                <input type="text" id="nombre" name="nombre" autocomplete="name" maxlength="100" placeholder="Ej. María Fernanda López" required>
+                <span class="field-error" id="err-nombre"></span>
+              </div>
+              <div class="bk-row">
+                <div class="bk-field">
+                  <label for="telefono">Teléfono / WhatsApp <span class="req">*</span></label>
+                  <div class="phone-wrap">
+                    <span class="phone-prefix">+504</span>
+                    <input type="tel" id="telefono" name="telefono" inputmode="numeric" autocomplete="tel-national" maxlength="9" placeholder="0000-0000" required>
+                  </div>
+                  <span class="field-error" id="err-telefono"></span>
+                </div>
+                <div class="bk-field">
+                  <label for="email">Correo electrónico <span class="hint" style="display:inline">(opcional)</span></label>
+                  <input type="email" id="email" name="email" autocomplete="email" maxlength="120" placeholder="usted@correo.com">
+                  <span class="field-error" id="err-email"></span>
+                </div>
+              </div>
+              <span class="bk-chips-label" id="bkHoraLabel">¿A qué hora llega aproximadamente?</span>
+              <div class="bk-chips" data-chips="hora" role="group" aria-labelledby="bkHoraLabel">
+                <button type="button" class="bk-chip" aria-pressed="false" data-value="Antes de 3 p.m.">Antes de 3 p.m.</button>
+                <button type="button" class="bk-chip" aria-pressed="false" data-value="3–6 p.m.">3–6 p.m.</button>
+                <button type="button" class="bk-chip" aria-pressed="false" data-value="6–9 p.m.">6–9 p.m.</button>
+                <button type="button" class="bk-chip" aria-pressed="false" data-value="Después de 9 p.m.">Después de 9 p.m.</button>
+                <button type="button" class="bk-chip" aria-pressed="false" data-value="Aún no lo sé">Aún no lo sé</button>
+              </div>
+              <span class="bk-chips-label" id="bkCelLabel">¿Celebra algo especial?</span>
+              <div class="bk-chips" data-chips="celebracion" role="group" aria-labelledby="bkCelLabel">
+                <button type="button" class="bk-chip" aria-pressed="false" data-value="Cumpleaños">Cumpleaños</button>
+                <button type="button" class="bk-chip" aria-pressed="false" data-value="Aniversario">Aniversario</button>
+                <button type="button" class="bk-chip" aria-pressed="false" data-value="Luna de miel">Luna de miel</button>
+                <button type="button" class="bk-chip" aria-pressed="false" data-value="Viaje de negocios">Viaje de negocios</button>
+                <button type="button" class="bk-chip" aria-pressed="false" data-value="En familia">En familia</button>
+                <button type="button" class="bk-chip" aria-pressed="false" data-value="Solo explorando">Solo explorando</button>
+              </div>
+              <div class="bk-field" style="margin-top:1.6rem">
+                <label for="peticiones">Peticiones especiales <span class="hint" style="display:inline">(opcional)</span></label>
+                <textarea id="peticiones" name="peticiones" maxlength="380" placeholder="Cuna, cama extra, piso bajo, almohadas adicionales, dieta especial… haremos lo posible."></textarea>
+                <span class="hint"><span id="petCount">0</span>/380</span>
+              </div>
+              <div class="bk-actions">
+                <button type="button" class="bk-back" data-prev>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+                  Atrás
+                </button>
+                <button type="submit" class="btn btn-gold" id="submitBtn"><span id="submitText">Enviar solicitud</span></button>
+              </div>
+            </section>
+          </form>
+
+          <div class="bk-confirm" id="bkConfirm" role="status" aria-live="polite">
+            <div class="success-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span class="label">Solicitud recibida</span>
+            <h2 class="bk-confirm-title" id="bkConfirmTitle">Le estamos esperando</h2>
+            <p class="bk-confirm-lede" id="bkConfirmLede"></p>
+            <div class="bk-confirm-actions">
+              <a class="btn btn-green" id="bkConfirmWa" href="https://wa.me/50494519992" target="_blank" rel="noopener noreferrer">Escribir por WhatsApp</a>
+              <a class="btn btn-outline" href="tel:+504****0516">Llamar al hotel</a>
+            </div>
+            <div class="bk-confirm-ref">
+              <span class="bk-ref-label">Su referencia</span>
+              <span class="success-code" id="bkConfirmCode">HP-000000</span>
+              <span class="bk-ref-note">Guárdela para dar seguimiento a su solicitud.</span>
+            </div>
+            <dl class="bk-confirm-details">
+              <div class="fact-row"><dt>Nombre</dt><dd id="bkOkNombre">—</dd></div>
+              <div class="fact-row"><dt>Llegada</dt><dd id="bkOkLlegada">—</dd></div>
+              <div class="fact-row"><dt>Salida</dt><dd id="bkOkSalida">—</dd></div>
+              <div class="fact-row"><dt>Noches</dt><dd id="bkOkNoches">—</dd></div>
+              <div class="fact-row"><dt>Habitaciones</dt><dd id="bkOkHab">—</dd></div>
+              <div class="fact-row"><dt>Huéspedes</dt><dd id="bkOkHue">—</dd></div>
+              <div class="fact-row"><dt>Habitación preferida</dt><dd id="bkOkTipo">—</dd></div>
+            </dl>
+            <div class="bk-next">
+              <div class="bk-next-item"><span class="bk-next-n">01</span><strong>Confirmación</strong><span>Le contactamos con la disponibilidad y el monto total de su estadía.</span></div>
+              <div class="bk-next-item"><span class="bk-next-n">02</span><strong>Depósito 50%</strong><span>Asegure su reserva en efectivo, tarjeta o transferencia.</span></div>
+              <div class="bk-next-item"><span class="bk-next-n">03</span><strong>Estadía</strong><span>Pague el saldo al llegar y presente su código en recepción.</span></div>
+            </div>
+            <button type="button" class="btn btn-outline bk-nueva" id="bkNuevaBtn">Hacer otra solicitud</button>
+          </div>
         </div>
-        <div class="aside-card aside-contact">
-          <h3>¿Prefiere atención directa?</h3>
-          <p>Nuestro equipo le atiende las 24 horas.</p>
-          <a class="btn btn-outline" href="tel:+50424430516">+504 2443-0516</a>
-          <a class="btn btn-green" href="https://wa.me/50494519992?text=Hola%2C%20quisiera%20reservar%20una%20habitaci%C3%B3n%20en%20el%20Hotel%20Pr%C3%ADncipe" target="_blank" rel="noopener noreferrer">WhatsApp +504 9451-9992</a>
-        </div>
-      </aside>
+
+        <aside class="bk-rail" id="bkRail" aria-label="Resumen de su estadía">
+          <div class="bk-summary">
+            <h3>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Su estadía
+            </h3>
+            <div class="bk-sum-nights" id="bkSumNights" aria-live="polite">—<small>noches</small></div>
+            <dl class="bk-sum-rows">
+              <div class="bk-sum-row"><dt>Llegada</dt><dd id="bkSumLlegada">—</dd></div>
+              <div class="bk-sum-row"><dt>Salida</dt><dd id="bkSumSalida">—</dd></div>
+              <div class="bk-sum-row"><dt>Habitaciones</dt><dd id="bkSumHab">1 habitación</dd></div>
+              <div class="bk-sum-row"><dt>Huéspedes</dt><dd id="bkSumHue">1 huésped</dd></div>
+              <div class="bk-sum-row"><dt>Habitación</dt><dd id="bkSumTipo">Sin preferencia</dd></div>
+            </dl>
+            <p class="bk-sum-deposit">Depósito del 50% para confirmar · saldo al llegar</p>
+          </div>
+          <div class="bk-perks">
+            <h4>Reserva directa</h4>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Sin intermediarios ni comisiones</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Confirmación personal por WhatsApp o teléfono</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Depósito flexible: efectivo, tarjeta o transferencia</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Recepción 24 horas</li>
+            </ul>
+          </div>
+          <div class="bk-how">
+            <h4>Cómo funciona</h4>
+            <ol>
+              <li><strong>Solicitud.</strong> Envíe sus fechas y datos; no se cobra nada en línea.</li>
+              <li><strong>Confirmación.</strong> Le contactamos con la disponibilidad y el monto total.</li>
+              <li><strong>Depósito.</strong> Asegure su reserva con el 50% en efectivo, tarjeta o transferencia.</li>
+              <li><strong>Estadía.</strong> Pague el saldo al llegar y presente su código en recepción.</li>
+            </ol>
+          </div>
+          <div class="bk-contact">
+            <h4>¿Prefiere atención directa?</h4>
+            <p>Nuestro equipo le atiende las 24 horas.</p>
+            <a class="btn btn-gold" href="https://wa.me/50494519992?text=Hola%2C%20quisiera%20reservar%20una%20habitaci%C3%B3n%20en%20el%20Hotel%20Pr%C3%ADncipe" target="_blank" rel="noopener noreferrer">WhatsApp +504 9451-9992</a>
+            <a class="btn btn-outline" href="tel:+50424430516">+504 2443-0516</a>
+          </div>
+        </aside>
+      </div>
     </div>
   </main>
 
@@ -210,6 +356,6 @@
   </footer>
 
   <script src="/js/main.js?v=20261118m" defer></script>
-  <script src="/js/reservar.js?v=20261118m" defer></script>
+  <script src="/js/reservar.js?v=20261118p" defer></script>
 </body>
 </html>
