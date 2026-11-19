@@ -101,7 +101,7 @@
       state.llegada = iso; state.salida = "";
     } else if (d > parseLocal(state.llegada)) {
       if (nochesEntre(state.llegada, iso) > MAX_NOCHES) {
-        calHint.textContent = "La estadía máxima es de 30 noches. Elija una salida más cercana o contáctenos.";
+        calHint.textContent = "La estadía máxima es de 30 noches. Para estadías más largas, contáctenos.";
         calHint.classList.add("err");
         return;
       }
@@ -206,9 +206,9 @@
   function validarDatos() {
     var ok = true;
     var v = nombre.value.trim().replace(/\s{2,}/g, " ");
-    if (!NOMBRE_RE.test(v)) { setError(nombre, "Ingrese su nombre completo (solo letras, entre 3 y 100 caracteres)."); ok = false; }
+    if (!NOMBRE_RE.test(v)) { setError(nombre, "Escriba su nombre y apellido como en su identificación."); ok = false; }
     else setError(nombre, "");
-    if (!TEL_RE.test(telefono.value)) { setError(telefono, "Formato: 0000-0000."); ok = false; }
+    if (!TEL_RE.test(telefono.value)) { setError(telefono, "Escriba los 8 dígitos de su teléfono, por ejemplo 9876-5432."); ok = false; }
     else setError(telefono, "");
     if (email.value.trim() && !EMAIL_RE.test(email.value.trim())) { setError(email, "Correo no válido."); ok = false; }
     else setError(email, "");
@@ -220,7 +220,7 @@
     if (!state.salida) { calHint.textContent = "Seleccione su fecha de salida."; calHint.classList.add("err"); return false; }
     var n = nochesEntre(state.llegada, state.salida);
     if (n <= 0) { calHint.textContent = "La salida debe ser posterior a la llegada."; calHint.classList.add("err"); return false; }
-    if (n > MAX_NOCHES) { calHint.textContent = "Máximo 30 noches. Para estadías más largas, contáctenos."; calHint.classList.add("err"); return false; }
+    if (n > MAX_NOCHES) { calHint.textContent = "La estadía máxima es de 30 noches. Para estadías más largas, contáctenos."; calHint.classList.add("err"); return false; }
     calHint.textContent = ""; calHint.classList.remove("err");
     return true;
   }
@@ -345,7 +345,8 @@
   /* ---------- confirmación ---------- */
   function mostrarExito(d) {
     form.style.display = "none";
-    progress.style.display = "none";
+    showStep(4, false);
+    progItems.forEach(function (li) { li.querySelector(".bk-pbtn").disabled = true; });
     var rail = $("bkRail"); if (rail) rail.style.display = "none";
     var lay = document.querySelector(".bk-layout"); if (lay) lay.style.gridTemplateColumns = "1fr";
     var head = document.querySelector(".bk-head"); if (head) head.style.display = "none";
@@ -361,7 +362,7 @@
 
     var texto = "Hola, envié una solicitud de reserva en la página web del Hotel Príncipe.\n" +
       "Código: " + d.codigo + "\nNombre: " + d.nombre + "\n" +
-      "Llegada: " + d.fecha_llegada + " · Salida: " + d.fecha_salida + " (" + d.noches + " noches)\n" +
+      "Llegada: " + fmtLargo(d.fecha_llegada) + " · Salida: " + fmtLargo(d.fecha_salida) + " (" + d.noches + " noches)\n" +
       "Habitaciones: " + d.habitaciones + " · Huéspedes: " + d.huespedes +
       (state.tipo ? "\nHabitación preferida: " + state.tipo : "") +
       "\nQuedo atento a la confirmación y al detalle del depósito del 50%. Gracias.";
