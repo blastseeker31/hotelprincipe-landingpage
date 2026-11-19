@@ -184,7 +184,7 @@
 .bk-field label { font-family: var(--font-label); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); display: block; margin-bottom: 0.5rem; }
 .bk-field label .req { color: var(--gold-dark); }
 .bk-field input, .bk-field textarea {
-  width: 100%; border: 1px solid var(--line); border-radius: var(--radius);
+  width: 100%; border: 1px solid var(--line-input); border-radius: var(--radius);
   background: var(--cream); padding: 0.85rem 1rem;
   font-family: var(--font-body); font-size: 0.98rem; color: var(--ink);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;

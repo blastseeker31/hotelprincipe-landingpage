@@ -16,6 +16,7 @@
   --green: #2E4B3F;
   --green-dark: #243C32;
   --line: #DED6C8;
+  --line-input: #8C8269; /* bordes de controles: 3.65:1 vs #FBFAF6, 3.47:1 vs crema, 3.18:1 vs cream-deep (WCAG 1.4.11) */
   --error: #A33B2E;
   --ok: #2E6B4F;
 
@@ -478,7 +479,7 @@ figure.plaza-figure { margin: 0 0 2.4rem; }
   width: 100%;
   font-family: var(--font-body); font-size: 0.98rem; color: var(--ink);
   background: #FBFAF6;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-input);
   border-radius: var(--radius);
   padding: 0.8rem 0.95rem;
   min-height: 48px;
@@ -500,7 +501,7 @@ figure.plaza-figure { margin: 0 0 2.4rem; }
 .phone-prefix {
   display: inline-flex; align-items: center;
   background: var(--cream-deep);
-  border: 1px solid var(--line); border-right: none;
+  border: 1px solid var(--line-input); border-right: none;
   border-radius: var(--radius) 0 0 var(--radius);
   padding: 0 0.95rem;
   font-family: var(--font-label); font-size: 0.85rem; letter-spacing: 0.06em;
