@@ -405,8 +405,6 @@ figure.plaza-figure { margin: 0 0 2.4rem; }
 .facade-figure { margin: 2.8rem 0 0; padding: 0.6rem; border: 1px solid var(--line); background: var(--surface); }
 .facade-figure img { display: block; width: 100%; height: auto; max-height: 460px; object-fit: cover; object-position: center 45%; }
 .facade-frame { overflow: hidden; }
-.facade-frame img { transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1); }
-.facade-figure:hover .facade-frame img { transform: scale(1.025); }
 .facade-figure figcaption { margin: 0.75rem 0.2rem 0.15rem; font-size: 0.85rem; font-style: italic; color: var(--ink-soft); text-align: center; }
 .facade-figure figcaption strong { color: var(--gold-dark); font-style: normal; font-weight: 500; }
 
