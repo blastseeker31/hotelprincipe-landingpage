@@ -1,6 +1,7 @@
 FROM python:3.12-slim
 WORKDIR /app
-COPY server.py index.html reservar.html admin.html ./
+COPY server.py index.html reservar.html preguntas.html admin.html ./
+COPY robots.txt sitemap.xml manifest.webmanifest ./
 COPY css/ css/
 COPY js/ js/
 COPY assets/ assets/
