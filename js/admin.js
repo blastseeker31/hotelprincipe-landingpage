@@ -155,7 +155,7 @@
     var tel = String(r.telefono || "").replace(/[^\d]/g, "");
     var wa = "https://wa.me/" + tel + "?text=" + encodeURIComponent(
       "Hola " + r.nombre + ", le contactamos del Hotel Príncipe sobre su solicitud de reserva " + r.codigo +
-      " (llegada " + r.fecha_llegada + ", salida " + r.fecha_salida + ").");
+      " (llegada " + fmtFecha(r.fecha_llegada) + ", salida " + fmtFecha(r.fecha_salida) + ").");
     var acciones = "";
     if (r.estado === "pendiente") {
       acciones = btnEstado(r.codigo, "confirmada", "Confirmar", "btn-confirm") +
@@ -170,7 +170,7 @@
     return '<article class="reserva-card estado-' + esc(r.estado) + '">' +
       '<div class="reserva-head">' +
         '<span class="reserva-codigo">' + esc(r.codigo) + "</span>" +
-        '<span class="reserva-fecha">Recibida: ' + fmtCreado(r.created_at) + "</span>" +
+        '<span class="reserva-fecha">Recibida el ' + fmtCreado(r.created_at) + "</span>" +
       "</div>" +
       '<div class="reserva-nombre">' + esc(r.nombre) + "</div>" +
       '<div class="reserva-meta">' +
@@ -207,6 +207,7 @@
     if (!b) return;
     var codigo = b.getAttribute("data-codigo");
     var estado = b.getAttribute("data-estado");
+    if (estado === "cancelada" && !window.confirm("¿Cancelar la reserva " + codigo + "?")) return;
     b.disabled = true;
     api("/api/admin/reservas/estado", {
       method: "POST",
@@ -215,7 +216,7 @@
     })
       .then(function (res) {
         if (res.data && res.data.ok) {
-          toast(codigo + " → " + estado + ".");
+          toast("Reserva " + codigo + " " + (estado === "pendiente" ? "reabierta como pendiente" : estado) + ".");
           cargar(false);
         } else {
           b.disabled = false;
