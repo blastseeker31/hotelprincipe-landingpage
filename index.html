@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Josefin+Sans:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css?v=20261118d">
+  <link rel="stylesheet" href="/css/style.css?v=20261118h">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -82,6 +82,7 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="/#hotel">El Hotel</a></li>
         <li><a href="/#habitaciones">Habitaciones</a></li>
+        <li><a href="/#plaza">Plaza</a></li>
         <li><a href="/#servicios">Servicios</a></li>
         <li><a href="/#ubicacion">Ubicación</a></li>
         <li><a href="/preguntas">Preguntas</a></li>
@@ -122,7 +123,7 @@
             <h3>En breve</h3>
             <dl>
               <div class="fact-row"><dt>Ubicación</dt><dd>Barrio El Centro, La Ceiba</dd></div>
-              <div class="fact-row"><dt>Alrededores</dt><dd>En nuestra plaza: restaurante Los Almendros y Farmacia Suyapa. Bancos y tiendas a la vuelta</dd></div>
+              <div class="fact-row"><dt>Alrededores</dt><dd>Joyería, restaurante buffet, café y farmacia en nuestra plaza. Bancos y tiendas a la vuelta</dd></div>
               <div class="fact-row"><dt>Recepción</dt><dd>24 horas</dd></div>
               <div class="fact-row"><dt>Desayuno</dt><dd>Buffet · Los Almendros</dd></div>
               <div class="fact-row"><dt>Pago</dt><dd>Efectivo, tarjeta o transferencia</dd></div>
@@ -208,6 +209,53 @@
       </div>
     </section>
 
+    <!-- Nuestra plaza -->
+    <section class="section" id="plaza">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="label">Los Almendros Plaza</span>
+          <h2>Nuestra plaza comercial</h2>
+          <p class="lead">En la planta baja del hotel, cuatro locales que resuelven su día sin salir del centro de La Ceiba.</p>
+        </div>
+        <figure class="facade-figure plaza-figure">
+          <div class="facade-frame">
+            <img src="/assets/images/plaza-fachada.jpg" alt="Los Almendros Plaza en la planta baja del Hotel Príncipe: rótulos de la joyería El Diamante, el restaurante Los Almendros, Los Almendros Coffee y Farmacia Suyapa" width="1600" height="570" loading="lazy" decoding="async">
+          </div>
+          <figcaption><strong>Los Almendros Plaza</strong>, en la planta baja del hotel: joyería, restaurante buffet, café y farmacia.</figcaption>
+        </figure>
+        <div class="plaza-grid">
+          <article class="plaza-card">
+            <div class="plaza-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg></div>
+            <span class="plaza-cat">Joyería</span>
+            <h3>Joyería el Diamante</h3>
+            <p>Joyería en la planta baja del hotel: joyas y detalles para cada ocasión, sin salir de Los Almendros Plaza.</p>
+            <p class="plaza-hours">Horario: consulte en recepción</p>
+          </article>
+          <article class="plaza-card">
+            <div class="plaza-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17h20"/><path d="M5 17a7 7 0 0 1 14 0"/><path d="M12 10V8"/><circle cx="12" cy="7" r="1"/></svg></div>
+            <span class="plaza-cat">Restaurante</span>
+            <h3>Restaurante Buffet Los Almendros</h3>
+            <p>Desayuno buffet y almuerzo buffet con sabor local, en la plaza del hotel.</p>
+            <p class="plaza-hours">Lunes a sábado · 7 a.m. a 3 p.m.</p>
+          </article>
+          <article class="plaza-card">
+            <div class="plaza-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M7.5 2.5v2M11.5 2.5v2"/></svg></div>
+            <span class="plaza-cat">Café</span>
+            <h3>Los Almendros Coffee</h3>
+            <p>Café y bebidas para empezar la mañana o hacer una pausa en su recorrido.</p>
+            <p class="plaza-hours">Horario: consulte en recepción</p>
+          </article>
+          <article class="plaza-card">
+            <div class="plaza-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></div>
+            <span class="plaza-cat">Farmacia</span>
+            <h3>Farmacia Suyapa</h3>
+            <p>Medicamentos y cuidado personal, para lo que necesite durante su estadía.</p>
+            <p class="plaza-hours">Lunes a sábado · 8 a.m. a 5 p.m.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- Servicios -->
     <section class="section section-alt" id="servicios">
       <div class="wrap">
@@ -216,35 +264,28 @@
           <h2>Todo lo necesario para su estadía</h2>
         </div>
         <div class="services-grid">
-          <article class="service-card feature span-7">
-            <div class="service-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M7 5.5c0-1 .8-1 .8-2M11 5.5c0-1 .8-1 .8-2M15 5.5c0-1 .8-1 .8-2"/></svg>
-            </div>
-            <h3>Restaurante Los Almendros</h3>
-            <p>Desayuno buffet y almuerzo buffet en nuestra plaza. De lunes a sábado, de 7 a.m. a 3 p.m., con sabor local para empezar el día o hacer una pausa en su recorrido.</p>
-          </article>
-          <article class="service-card span-5">
+          <article class="service-card feature span-6">
             <div class="service-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
             </div>
             <h3>Recepción 24 horas</h3>
             <p>Atención a cualquier hora, todos los días. Llegue tarde o salga temprano: siempre habrá alguien para atenderle.</p>
           </article>
-          <article class="service-card span-4">
+          <article class="service-card span-6">
             <div class="service-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 6.5l14 11M19 6.5l-14 11M12 3l-2 2m2-2 2 2M12 21l-2-2m2 2 2-2"/></svg>
             </div>
             <h3>Aire acondicionado</h3>
             <p>Habitaciones frescas para descansar a gusto en el clima cálido de La Ceiba.</p>
           </article>
-          <article class="service-card span-4">
+          <article class="service-card span-6">
             <div class="service-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 9.5a14 14 0 0 1 19 0M5.5 13a9.5 9.5 0 0 1 13 0M8.5 16.5a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1" fill="currentColor" stroke="none"/></svg>
             </div>
             <h3>WiFi</h3>
             <p>Conexión inalámbrica para mantenerse comunicado durante su visita.</p>
           </article>
-          <article class="service-card span-4">
+          <article class="service-card span-6">
             <div class="service-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.6 4.4L18 10l-4.4 1.6L12 16l-1.6-4.4L6 10l4.4-1.6L12 4z"/><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2z"/></svg>
             </div>
@@ -263,7 +304,7 @@
             <div class="section-head">
               <span class="label">Ubicación y contacto</span>
               <h2>En el centro de todo</h2>
-              <p class="lead">En nuestra plaza: restaurante Los Almendros y Farmacia Suyapa, abierta de lunes a sábado de 8 a.m. a 5 p.m. Bancos, tiendas y el movimiento del centro, a la vuelta.</p>
+              <p class="lead">Estamos en el corazón de La Ceiba: bancos, tiendas y el movimiento del centro, a la vuelta. En la planta baja del hotel, Los Almendros Plaza reúne joyería, restaurante buffet, café y farmacia.</p>
             </div>
             <ul class="contact-list">
               <li>
@@ -295,12 +336,6 @@
             <p class="map-fallback"><a href="https://www.google.com/maps/search/?api=1&amp;query=Hotel%20Pr%C3%ADncipe%2C%20La%20Ceiba%2C%20Honduras" target="_blank" rel="noopener noreferrer">¿No ve el mapa? Ábralo en Google Maps</a></p>
           </div>
         </div>
-        <figure class="facade-figure">
-          <div class="facade-frame">
-            <img src="/assets/images/fachada-hotel-principe.jpg" alt="Fachada del edificio del Hotel Príncipe en Barrio El Centro, La Ceiba: rótulo HOTEL PRÍNCIPE con corona dorada sobre la entrada, a la izquierda" width="1600" height="994" loading="lazy" decoding="async">
-          </div>
-          <figcaption>Nuestra fachada en el corazón de La Ceiba. Al llegar, busque el rótulo <strong>HOTEL PRÍNCIPE</strong> con la corona dorada sobre la entrada.</figcaption>
-        </figure>
       </div>
     </section>
 
@@ -331,6 +366,7 @@
           <ul>
             <li><a href="/#hotel">El Hotel</a></li>
             <li><a href="/#habitaciones">Habitaciones</a></li>
+        <li><a href="/#plaza">Plaza</a></li>
             <li><a href="/#servicios">Servicios</a></li>
             <li><a href="/#ubicacion">Ubicación</a></li>
             <li><a href="/preguntas">Preguntas</a></li>
@@ -363,6 +399,6 @@
     </div>
   </footer>
 
-  <script src="/js/main.js?v=20261118d" defer></script>
+  <script src="/js/main.js?v=20261118h" defer></script>
 </body>
 </html>
