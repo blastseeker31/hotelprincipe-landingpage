@@ -242,6 +242,8 @@
 .bk-sum-row dd { font-family: var(--font-display); font-size: 1rem; text-align: right; }
 .bk-sum-empty { color: var(--ink-soft); font-style: italic; font-size: 0.9rem; }
 .bk-sum-deposit { margin-top: 1.1rem; font-family: var(--font-label); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-dark); }
+.bk-sum-note { margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--line); font-size: 0.8rem; line-height: 1.55; color: var(--ink-soft); }
+.bk-sum-note strong { color: var(--ink); font-weight: 500; }
 
 .bk-perks { background: var(--cream-deep); border-radius: var(--radius); padding: 1.5rem 1.7rem; }
 .bk-perks h4 { font-family: var(--font-label); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 0.9rem; }
@@ -284,6 +286,7 @@
 .bk-ref-note { font-size: 0.78rem; color: var(--ink-soft); font-style: italic; max-width: 30ch; }
 .bk-nueva { margin-top: 0.4rem; }
 .bk-confirm-details { max-width: 420px; margin: 0 auto 1.8rem; text-align: left; border: 1px solid var(--line); border-radius: var(--radius); background: var(--cream); padding: 0.6rem 1.4rem; }
+.bk-confirm-note { max-width: 52ch; margin: 0 auto 1.9rem; font-size: 0.9rem; line-height: 1.6; color: var(--ink-soft); font-style: italic; }
 .bk-next { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 560px; margin: 0 auto 2rem; text-align: left; }
 .bk-next-item { border-top: 2px solid var(--gold-soft); padding-top: 0.8rem; }
 .bk-next-item .bk-next-n { font-family: var(--font-display); font-size: 1.1rem; color: var(--gold-dark); }
