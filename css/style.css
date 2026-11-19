@@ -761,6 +761,14 @@ html.js .reveal.revealed { opacity: 1; transform: none; }
 .room-card.dest-copan, .bk-room.dest-copan { background-image: url('../assets/images/destinos/copan.jpg'); }
 .room-card.dest-cayos, .bk-room.dest-cayos { background-image: url('../assets/images/destinos/cayos-cochinos.jpg'); }
 .room-card.dest-trujillo, .bk-room.dest-trujillo { background-image: url('../assets/images/destinos/trujillo.jpg'); }
+/* Encuadre por destino: zoom estático para que el sujeto domine sobre el cielo
+   (La Ceiba: pico del Cangrejal a la izquierda; Cayos: cayo con palmeras al centro). */
+.room-card.room-photo.dest-ceiba { background-size: auto 135%; background-position: 22% 58%; }
+.room-card.room-photo.dest-cayos { background-size: auto 150%; background-position: 47% 75%; }
+@media (max-width: 440px) {
+  /* En tarjetas angostas el cayo no cabe entero a 150%: menos zoom para no cortarlo. */
+  .room-card.room-photo.dest-cayos { background-size: auto 140%; background-position: 47% 68%; }
+}
 .rooms-credits { margin-top: 0.9rem; text-align: center; font-size: 0.72rem; line-height: 1.7; color: var(--ink-soft); }
 .rooms-credits a { color: var(--gold-dark); text-decoration: underline; text-underline-offset: 2px; }
 
