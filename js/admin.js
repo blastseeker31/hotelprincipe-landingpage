@@ -153,7 +153,7 @@
 
   function cardHTML(r) {
     var tel = String(r.telefono || "").replace(/[^\d]/g, "");
-    var wa = "https://wa.me/504" + tel + "?text=" + encodeURIComponent(
+    var wa = "https://wa.me/" + tel + "?text=" + encodeURIComponent(
       "Hola " + r.nombre + ", le contactamos del Hotel Príncipe sobre su solicitud de reserva " + r.codigo +
       " (llegada " + r.fecha_llegada + ", salida " + r.fecha_salida + ").");
     var acciones = "";
@@ -178,7 +178,7 @@
         "<span>" + r.habitaciones + (r.habitaciones === 1 ? " habitación" : " habitaciones") + " · " + r.huespedes + (r.huespedes === 1 ? " huésped" : " huéspedes") + "</span>" +
       "</div>" +
       '<div class="reserva-meta">' +
-        '<span>Tel: <a href="tel:+504' + tel + '">+504 ' + esc(r.telefono) + "</a> · <a href=\"" + wa + "\" target=\"_blank\" rel=\"noopener noreferrer\">WhatsApp</a></span>" +
+        '<span>Tel: <a href="tel:+' + tel + '">' + esc(r.telefono) + "</a> · <a href=\"" + wa + "\" target=\"_blank\" rel=\"noopener noreferrer\">WhatsApp</a></span>" +
         (r.email ? "<span>" + esc(r.email) + "</span>" : "") +
       "</div>" +
       (r.mensaje ? '<p class="reserva-mensaje">“' + esc(r.mensaje) + '”</p>' : "") +
