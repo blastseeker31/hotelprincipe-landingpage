@@ -454,6 +454,8 @@ figure.plaza-figure { margin: 0 0 2.4rem; }
   text-transform: uppercase; color: var(--ink-soft);
   display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
 }
+.footer-credits { margin-top: 1.4rem; font-size: 0.72rem; line-height: 1.7; color: var(--ink-soft); }
+.footer-credits a { color: var(--gold-dark); text-decoration: underline; text-underline-offset: 2px; }
 
 /* --------------------------------------------------------------------------
    Formularios (reserva)
